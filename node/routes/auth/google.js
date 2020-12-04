@@ -5,7 +5,7 @@ const router = express.Router();
 const google = require("googleapis").google;
 const fetch = require("node-fetch");
 const crypto = require("crypto");
-const friendcode = require("./../../../lib/friendcode.js");
+const friendcode = require("../../lib/friendcode.js");
 
 // GOOGLE AUTH SETUP
 const oAuth2Client = new google.auth.OAuth2(

@@ -4,7 +4,7 @@
 
 // loading diffrent components
 const initDatabase = require("./database.js");
-const initWebserver = require("./web/webserver.js");
+const initWebserver = require("./webserver.js");
 const initSocketserver = require("./socketserver.js");
 
 // object that is passed to each component to facilitate state exchange
