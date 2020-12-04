@@ -12,5 +12,8 @@
     "rollup-plugin-css-only": "^3.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "svelte": "^3.0.0"
+  },
+  "dependencies": {
+    "aframe": "^1.1.0"
   }
 }

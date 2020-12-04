@@ -1,8 +1,10 @@
 // EXPRESS WEBSERVER
+const staticFiles = "../web/public/";
 
 // LIBS
 const express = require("express");
 const useragent = require("express-useragent");
+const path = require("path");
 
 const initWebserver = async appData => {
   const app = express();
@@ -13,19 +15,19 @@ const initWebserver = async appData => {
     console.log("listening on port " + server.address().port);
   });
 
-  // ROUTES
+  // ROUTES (in a prod env static content will be served by nginx)
   // home
   app.get("/", async (req, res) => {
     res.status(200);
-    res.sendFile(__dirname + "/views/index.html");
+    res.sendFile(path.join(__dirname, staticFiles, "index.html"));
   });
 
   // static
-  app.use(express.static(__dirname + "/public"));
+  app.use(express.static(path.join(__dirname, staticFiles)));
 
   // api
-  const apiRouter = require("./routes/api");
-  app.use("/api", apiRouter(appData));
+  //const apiRouter = require("./routes/api");
+  //app.use("/api", apiRouter(appData));
   
   return server;
 };

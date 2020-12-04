@@ -2,6 +2,8 @@
 // Aframe Youtube Player Backend
 // -----------------------------
 
+require("dotenv").config()
+
 // loading diffrent components
 const initDatabase = require("./database.js");
 const initWebserver = require("./webserver.js");
@@ -13,5 +15,5 @@ let app = {};
 (async () => {
   app.db = await initDatabase(".data/users.db");
   app.server = await initWebserver(app);
-  app.io = await initSocketserver(app);
+  //app.io = await initSocketserver(app);
 })();
