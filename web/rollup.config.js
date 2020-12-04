@@ -3,6 +3,7 @@ import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import css from "rollup-plugin-css-only";
+import { terser } from "rollup-plugin-terser";
 
 export default {
   input: "src/main.js",
@@ -25,6 +26,7 @@ export default {
       dedupe: ["svelte"],
     }),
     commonjs(),
+    terser()
   ],
   watch: {
     clearScreen: false,
