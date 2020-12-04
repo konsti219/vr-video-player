@@ -1,0 +1,29 @@
+{
+  "name": "aframe-yt-player",
+  "version": "0.0.1",
+  "description": "thing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "node-fetch": "^2.6.0",
+    "express-useragent": "^1.0.15",
+    "nedb-promises": "^4.0.4",
+    "googleapis": "^64.0.0"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-express"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}
