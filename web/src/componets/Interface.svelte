@@ -1,6 +1,5 @@
 <script>
   import InterfacePanel from "./InterfacePanel.svelte";
-  import Scene from "./Scene.svelte";
 
   export let socket;
   console.log(socket);
@@ -9,6 +8,7 @@
   let isMobile = false;
   let novr = false;
   let orientationReady = false;
+  let loggedIn = false;
 
   // check device info
   try {
@@ -16,6 +16,10 @@
     isMobile = true;
   } catch (e) {}
   novr = new URL(location.href).searchParams.get("novr") === "true";
+
+  //
+  //! LOGIN
+  //
 
   // transfer cookie to ls, because setting cookies on server is easier
   const getCookie = (cookie) => {
@@ -31,56 +35,44 @@
     document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   }
 
-  const onResize = () => {
+  // check login
+  (async () => {
+    // check if token present
+    if (localStorage.getItem("userId") && localStorage.getItem("token")) {
+      // present, validate
+      console.log("checking token");
+      const data = await (
+        await fetch(
+          `/api/auth/token/validate?userId=${localStorage.getItem(
+            "userId"
+          )}&token=${localStorage.getItem("token")}`
+        )
+      ).json();
+      loggedIn = data.valid;
+    }
+    if (!loggedIn) {
+      // not present, remove
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+    }
+  })();
+
+  //
+  //! UI Interactions
+  //
+
+  const handleResize = () => {
     orientationReady = !isMobile || window.innerHeight < window.innerWidth;
   };
-  window.addEventListener("resize", onResize);
-  onResize();
+  window.addEventListener("resize", handleResize);
+  handleResize();
 
-  // fullscreen force
-  const stateChange = () => {
-    console.log("state change");
-
-    if (!app.loggedIn) {
-      app.setPrompt("#start-prompt-login");
-      return;
-    }
-    if (!app.socketReady) initSocket();
-
-    // check landscape
-    if (x) {
-      app.setPrompt("#start-prompt-landscape");
-      app.readyFullscreen = false;
-      return;
-    } else {
-      app.readyFullscreen = true;
-    }
-
-    /*
-    if (document.fullscreenElement || app.novr) {
-      app.setPrompt("#start-prompt-enter");
-      if (app.inGame) $("#start-prompt").css("display", "none");
-    } else {
-      app.setPrompt("#start-prompt-fullscreen");
-    }*/
-
-    // render enter prompt
-    if (app.account) {
-      /*
-      $("#prompt-user-name").text(
-        app.account.name === "[NEW]" ? "" : ", " + app.account.name
-      );*/
-    }
-  };
   /*
-  
-  $(document).on("fullscreenchange", (e) => stateChange());
-
   $("#start-prompt").on("click", (e) => {
     if (app.readyFullscreen && !app.novr && !document.fullScreenElement) {
       $("#container")[0].requestFullscreen();
     }
-  });
+  });*/
 
   /*$("#start-prompt-enter-button").on("click", () => {
     app.inGame = true;
@@ -144,30 +136,36 @@
     <!-- loading -->
     <!--<InterfacePanel>Loading...</InterfacePanel>-->
 
-    <!-- login -->
-    <InterfacePanel>
-      Login to start
-      <br /><br />
-      <a href="/api/auth/google">Login with Google</a>
-    </InterfacePanel>
+    {#if !loggedIn}
+      <!-- login -->
+      <InterfacePanel>
+        Login to start
+        <br /><br />
+        <a href="/api/auth/google">Login with Google</a>
+      </InterfacePanel>
+    {:else if isMobile && !orientationReady}
+      <!-- landscape -->
+      <InterfacePanel icon="fa-mobile-alt">
+        Please turn your device to landscape
+      </InterfacePanel>
+    {:else}
+      <InterfacePanel>
+        enter
+        <span
+          onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
+      </InterfacePanel>
+      <!-- fullscreen -->
+      <!--<i class="fas fa-expand start-prompt-icon-inner" />
+      <div class="start-prompt-text-inner">Click to enter fullscreen</div>
 
-    <!-- landscape -->
-    <!--<i class="fas fa-mobile-alt start-prompt-icon-inner" />
-    <div class="start-prompt-text-inner">
-      Please turn your device to landscape
-    </div>
-
-    <!-- fullscreen -->
-    <!--<i class="fas fa-expand start-prompt-icon-inner" />
-    <div class="start-prompt-text-inner">Click to enter fullscreen</div>
-
-    <!-- enter -->
-    <!--<div class="start-prompt-text">
-      Welcome<span id="prompt-user-name">, ...</span><br /><br />
-      <a id="start-prompt-enter-button">Enter</a>
-      <span
-        onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
-    </div>-->
+      <!-- enter -->
+      <!--<div class="start-prompt-text">
+        Welcome<span id="prompt-user-name">, ...</span><br /><br />
+        <a id="start-prompt-enter-button">Enter</a>
+        <span
+          onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
+      </div>-->
+    {/if}
 
     <div id="start-prompt-lower">
       <a href="/privacy.html">Privacy Policy</a>
