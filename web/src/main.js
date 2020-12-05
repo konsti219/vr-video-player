@@ -3,7 +3,7 @@ import "aframe"
 
 const app = new App({
 	target: document.body,
-	props: { name: "world" }
+	props: {}
 });
 
 export default app;
