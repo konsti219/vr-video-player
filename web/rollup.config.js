@@ -10,7 +10,7 @@ dotenv.config({ path: "../" });
 export default {
   input: "src/main.js",
   output: {
-    sourcemap: process.env.NODE_ENV = "development",
+    sourcemap: process.env.NODE_ENV == "development",
     format: "iife",
     name: "vr_video_player_web",
     file: "public/build/bundle.js",

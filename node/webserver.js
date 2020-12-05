@@ -17,13 +17,15 @@ const initWebserver = async appData => {
 
   // ROUTES (in a prod env static content will be served by nginx)
   // home
-  app.get("/", async (req, res) => {
-    res.status(200);
-    res.sendFile(path.join(__dirname, staticFiles, "index.html"));
-  });
+  if (process.env.NODE_ENV == "development") {
+    app.get("/", async (req, res) => {
+      res.status(200);
+      res.sendFile(path.join(__dirname, staticFiles, "index.html"));
+    });
 
-  // static
-  app.use(express.static(path.join(__dirname, staticFiles)));
+    // static
+    app.use(express.static(path.join(__dirname, staticFiles)));
+  }
 
   // api
   //const apiRouter = require("./routes/api");
