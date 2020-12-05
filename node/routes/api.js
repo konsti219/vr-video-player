@@ -14,7 +14,7 @@ module.exports = appData => {
   // -----------------------
 
   router.get("/", (req, res) => {
-    express.status(200);
+    res.status(200);
     res.json({
       code: 200,
       status: "OK"

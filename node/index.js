@@ -3,6 +3,7 @@
 // -----------------------------
 
 require("dotenv").config({ path: "../.env" });
+console.log(`vr-video-player running in ${process.env.NODE_ENV} envoirment`)
 
 // loading diffrent components
 const initDatabase = require("./database.js");
