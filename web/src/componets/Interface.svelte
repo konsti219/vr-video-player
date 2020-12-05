@@ -2,6 +2,9 @@
   import InterfacePanel from "./InterfacePanel.svelte";
   import Scene from "./Scene.svelte";
 
+  export let socket;
+  console.log(socket);
+
   let inGame = false;
   let isMobile = false;
   let novr = false;

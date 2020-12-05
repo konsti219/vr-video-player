@@ -1,3 +1,7 @@
+<script>
+  export let socket;
+</script>
+
 <!-- AFRAME SCENE -->
 <a-scene keyboard-shortcuts="enterVR: false">
   <!-- ASSETS -->

@@ -1,6 +1,12 @@
 <script>
   import Scene from "./componets/Scene.svelte";
   import Interface from "./componets/Interface.svelte";
+
+  import io from "socket.io-client/dist/socket.io.min.js";
+
+  let socket = io();
+  socket.on("connect", () => console.log("socket connected"));
+  console.log(socket);
 </script>
 
 <style>
@@ -16,6 +22,6 @@
 
 <!-- CONTAINER -->
 <main>
-  <Scene />
-  <Interface />
+  <Scene {socket} />
+  <Interface {socket} />
 </main>

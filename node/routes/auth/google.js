@@ -31,9 +31,9 @@ module.exports = appData => {
   // url redirect to google login
   router.get("/", async (req, res) => {
     if (prod) {
-      res.redirect(authUrl);
+      res.redirect(301, authUrl);
     } else {
-      res.redirect("http://" + process.env.DOMAIN + (prod ? "" : `:${process.env.PORT}`) + "/api/auth/google/callback?code=1234")
+      res.redirect(301, "http://" + process.env.DOMAIN + (prod ? "" : `:${process.env.PORT}`) + "/api/auth/google/callback?code=1234")
     }
   });
 
@@ -121,11 +121,11 @@ module.exports = appData => {
 
     // set cookies (will be moved to localstorage by client)
     res.cookie("userId", id, {
-      secure: true,
+      secure: prod,
       sameSite: true
     });
     res.cookie("userToken", token, {
-      secure: true,
+      secure: prod,
       sameSite: true
     });
 
