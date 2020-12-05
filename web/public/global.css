@@ -11,8 +11,6 @@ main {
   margin: 0;
   padding: 0;
   display: block;
-  height: 100%;
-  width: 100%;
   font-family: "Roboto", sans-serif;
   color: var(--text-color);
 }
@@ -23,4 +21,8 @@ main {
 .a-enter-vr-button {
   z-index: 0;
   display: none;
+}
+
+a {
+  color: #99a7de;
 }

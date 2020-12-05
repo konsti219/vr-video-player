@@ -16,6 +16,7 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "aframe": "^1.1.0"
+    "aframe": "^1.1.0",
+    "socket.io-client": "^3.0.3"
   }
 }

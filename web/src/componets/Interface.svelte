@@ -1,19 +1,11 @@
 <script>
+  import InterfacePanel from "./InterfacePanel.svelte";
+  import Scene from "./Scene.svelte";
+
   let inGame = false;
   let isMobile = false;
   let novr = false;
-
-  let app = {
-    readyFullscreen: false,
-    /*setPrompt: (id) => {
-      $("#start-prompt-content").children().css("display", "none");
-      $(id).css("display", "block");
-      $("#start-prompt").css("display", "block");
-    },*/
-    loggedIn: false,
-    novr: false,
-    socketReady: false,
-  };
+  let orientationReady = false;
 
   // check device info
   try {
@@ -36,6 +28,12 @@
     document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   }
 
+  const onResize = () => {
+    orientationReady = !isMobile || window.innerHeight < window.innerWidth;
+  };
+  window.addEventListener("resize", onResize);
+  onResize();
+
   // fullscreen force
   const stateChange = () => {
     console.log("state change");
@@ -47,7 +45,7 @@
     if (!app.socketReady) initSocket();
 
     // check landscape
-    if (app.isMobile && window.innerHeight > window.innerWidth) {
+    if (x) {
       app.setPrompt("#start-prompt-landscape");
       app.readyFullscreen = false;
       return;
@@ -72,7 +70,7 @@
     }
   };
   /*
-  $(window).on("resize", (e) => stateChange());
+  
   $(document).on("fullscreenchange", (e) => stateChange());
 
   $("#start-prompt").on("click", (e) => {
@@ -94,6 +92,8 @@
     top: 0;
     left: 0;
     background-color: var(--background-primary);
+    height: 100%;
+    width: 100%;
   }
 
   /* logo */
@@ -114,47 +114,6 @@
     padding-left: 0.5em;
   }
 
-  /* content */
-  .start-prompt-center {
-    width: 90%;
-    max-width: 700px;
-    height: fit-content;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .start-prompt-icon-section {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-  }
-  .start-prompt-icon {
-    position: relative;
-  }
-  .start-prompt-icon-inner {
-    font-size: min(14vw, 140px);
-    transform: translate(-50%, -50%) rotate(270deg);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-  }
-  .start-prompt-text {
-    text-align: center;
-    font-size: 1.8em;
-    height: fit-content;
-  }
-  .start-prompt-text-inner {
-    display: block;
-    margin: auto;
-    padding: 1vh;
-    height: fit-content;
-    width: calc(80% - 2vh);
-    top: 50%;
-    position: absolute;
-    transform: translate(0, -50%);
-  }
-
   /* lower */
   #start-prompt-lower {
     position: absolute;
@@ -167,7 +126,7 @@
 
 <!-- START PROMPT -->
 {#if !inGame}
-  <div class="interface" style="display: block">
+  <div class="interface">
     <!-- upper logo -->
     <div id="start-prompt-logo">
       <img
@@ -178,75 +137,34 @@
     </div>
 
     <!-- start prompt content -->
-    <div
-      id="start-prompt-content"
-      class="start-prompt-section"
-      style="display: block">
-      <!-- loading -->
-      <div
-        id="start-prompt-loading"
-        class="start-prompt-center"
-        style="display: block">
-        <div class="start-prompt-text">Loading...</div>
-      </div>
 
-      <!-- login -->
-      <div
-        id="start-prompt-login"
-        class="start-prompt-center"
-        style="display: none">
-        <div class="start-prompt-text center">
-          Login to start
-          <br /><br />
-          <a href="/api/auth/google">Login with Google</a>
-        </div>
-      </div>
+    <!-- loading -->
+    <!--<InterfacePanel>Loading...</InterfacePanel>-->
 
-      <!-- landscape -->
-      <div
-        id="start-prompt-landscape"
-        class="start-prompt-center"
-        style="display: none">
-        <div class="start-prompt-icon-section">
-          <div class="start-prompt-icon">
-            <i class="fas fa-mobile-alt start-prompt-icon-inner" />
-          </div>
-          <div class="start-prompt-text">
-            <div class="start-prompt-text-inner">
-              Please turn your device to landscape
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- login -->
+    <InterfacePanel>
+      Login to start
+      <br /><br />
+      <a href="/api/auth/google">Login with Google</a>
+    </InterfacePanel>
 
-      <!-- fullscreen -->
-      <div
-        id="start-prompt-fullscreen"
-        class="start-prompt-center"
-        style="display: none">
-        <div class="start-prompt-icon-section">
-          <div class="start-prompt-icon">
-            <i class="fas fa-expand start-prompt-icon-inner" />
-          </div>
-          <div class="start-prompt-text">
-            <div class="start-prompt-text-inner">Click to enter fullscreen</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- enter -->
-      <div
-        id="start-prompt-enter"
-        class="start-prompt-center"
-        style="display: none">
-        <div class="start-prompt-text">
-          Welcome<span id="prompt-user-name">, ...</span><br /><br />
-          <a id="start-prompt-enter-button">Enter</a>
-          <span
-            onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
-        </div>
-      </div>
+    <!-- landscape -->
+    <!--<i class="fas fa-mobile-alt start-prompt-icon-inner" />
+    <div class="start-prompt-text-inner">
+      Please turn your device to landscape
     </div>
+
+    <!-- fullscreen -->
+    <!--<i class="fas fa-expand start-prompt-icon-inner" />
+    <div class="start-prompt-text-inner">Click to enter fullscreen</div>
+
+    <!-- enter -->
+    <!--<div class="start-prompt-text">
+      Welcome<span id="prompt-user-name">, ...</span><br /><br />
+      <a id="start-prompt-enter-button">Enter</a>
+      <span
+        onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
+    </div>-->
 
     <div id="start-prompt-lower">
       <a href="/privacy.html">Privacy Policy</a>
