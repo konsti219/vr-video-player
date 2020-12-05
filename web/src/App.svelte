@@ -1,6 +1,7 @@
 <script>
   import Scene from "./componets/Scene.svelte";
   import Interface from "./componets/Interface.svelte";
+  import Socket from "./componets/Socket.svelte";
 
   import io from "socket.io-client/dist/socket.io.min.js";
 
@@ -26,4 +27,5 @@
 <main>
   <Scene {app} />
   <Interface {app} />
+  <Socket {app} />
 </main>

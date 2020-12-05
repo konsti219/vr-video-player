@@ -51,6 +51,12 @@
         )
       ).json();
       loggedIn = data.valid;
+
+      // start socket
+      socket.emit("auth", {
+        userId: localStorage.getItem("userId"),
+        token: localStorage.getItem("token"),
+      });
     }
     if (!loggedIn) {
       // not present, remove
