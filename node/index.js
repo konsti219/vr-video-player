@@ -2,7 +2,7 @@
 // Aframe Youtube Player Backend
 // -----------------------------
 
-require("dotenv").config({ path: "../" });
+require("dotenv").config()
 
 // loading diffrent components
 const initDatabase = require("./database.js");
