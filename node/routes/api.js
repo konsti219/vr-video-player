@@ -13,6 +13,14 @@ module.exports = appData => {
   // Api Routes
   // -----------------------
 
+  router.get("/", (req, res) => {
+    express.status(200);
+    res.json({
+      code: 200,
+      status: "OK"
+    })
+  })
+
   router.use("/auth", authRouter(router.appData));
   //router.use("/account", accountRouter(router.db));
   //router.use("/servers", serverRouter(router.db));

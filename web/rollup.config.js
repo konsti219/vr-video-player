@@ -5,7 +5,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import css from "rollup-plugin-css-only";
 import { terser } from "rollup-plugin-terser";
 import dotenv from "dotenv"
-dotenv.config({ path: "../" });
+dotenv.config({ path: "../.env" });
 
 export default {
   input: "src/main.js",

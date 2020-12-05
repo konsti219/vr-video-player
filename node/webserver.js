@@ -28,8 +28,8 @@ const initWebserver = async appData => {
   }
 
   // api
-  //const apiRouter = require("./routes/api");
-  //app.use("/api", apiRouter(appData));
+  const apiRouter = require("./routes/api");
+  app.use("/api", apiRouter(appData));
   
   return server;
 };
