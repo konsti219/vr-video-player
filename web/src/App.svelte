@@ -4,9 +4,11 @@
 
   import io from "socket.io-client/dist/socket.io.min.js";
 
-  let socket = io();
-  socket.on("connect", () => console.log("socket connected"));
-  console.log(socket);
+  let app = {};
+  app.socket = io();
+  app.socket.on("connect", () => console.log("socket connected"));
+
+  app.account = {};
 </script>
 
 <style>
@@ -22,6 +24,6 @@
 
 <!-- CONTAINER -->
 <main>
-  <Scene {socket} />
-  <Interface {socket} />
+  <Scene {app} />
+  <Interface {app} />
 </main>

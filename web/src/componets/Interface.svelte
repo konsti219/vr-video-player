@@ -1,21 +1,23 @@
 <script>
   import InterfacePanel from "./InterfacePanel.svelte";
 
-  export let socket;
-  console.log(socket);
+  export let app;
+  let socket = app.socket;
+  let account = app.account;
 
-  let inGame = false;
+  app.inGame = false;
   let isMobile = false;
-  let novr = false;
   let orientationReady = false;
   let loggedIn = false;
+  let fullscreenActive = false;
+  let gameReady = false;
 
   // check device info
   try {
     document.createEvent("TouchEvent");
     isMobile = true;
   } catch (e) {}
-  novr = new URL(location.href).searchParams.get("novr") === "true";
+  fullscreenActive = new URL(location.href).searchParams.get("novr") == "true";
 
   //
   //! LOGIN
@@ -67,17 +69,28 @@
   window.addEventListener("resize", handleResize);
   handleResize();
 
-  /*
-  $("#start-prompt").on("click", (e) => {
-    if (app.readyFullscreen && !app.novr && !document.fullScreenElement) {
-      $("#container")[0].requestFullscreen();
-    }
-  });*/
+  $: gameReady =
+    loggedIn && (!isMobile || orientationReady) && fullscreenActive;
 
-  /*$("#start-prompt-enter-button").on("click", () => {
-    app.inGame = true;
-    stateChange();
-  });*/
+  const handleClick = (e) => {
+    if (loggedIn && (!isMobile || orientationReady) && !fullscreenActive) {
+      document.querySelector("main").requestFullscreen();
+    }
+  };
+  window.addEventListener("fullscreenchange", () => {
+    // weird thing to get svelte to rerender
+    if (document.fullscreenElement) {
+      fullscreenActive = true;
+    } else {
+      fullscreenActive = false;
+    }
+  });
+
+  const handleGameEnter = () => {
+    if (gameReady) {
+      app.inGame = true;
+    }
+  };
 </script>
 
 <style>
@@ -120,8 +133,8 @@
 </style>
 
 <!-- START PROMPT -->
-{#if !inGame}
-  <div class="interface">
+{#if !app.inGame || !gameReady}
+  <div class="interface" on:click={handleClick}>
     <!-- upper logo -->
     <div id="start-prompt-logo">
       <img
@@ -143,28 +156,37 @@
         <br /><br />
         <a href="/api/auth/google">Login with Google</a>
       </InterfacePanel>
+
+      <!---->
     {:else if isMobile && !orientationReady}
       <!-- landscape -->
-      <InterfacePanel icon="fa-mobile-alt">
+      <InterfacePanel icon="fa-mobile-alt" iconRotation="270deg">
         Please turn your device to landscape
       </InterfacePanel>
-    {:else}
-      <InterfacePanel>
-        enter
-        <span
-          onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
-      </InterfacePanel>
-      <!-- fullscreen -->
-      <!--<i class="fas fa-expand start-prompt-icon-inner" />
-      <div class="start-prompt-text-inner">Click to enter fullscreen</div>
 
+      <!---->
+    {:else if !fullscreenActive}
+      <!-- fullscreen -->
+      <InterfacePanel icon="fa-expand">
+        Click to enter fullscreen
+      </InterfacePanel>
+
+      <!---->
+    {:else}
       <!-- enter -->
-      <!--<div class="start-prompt-text">
-        Welcome<span id="prompt-user-name">, ...</span><br /><br />
-        <a id="start-prompt-enter-button">Enter</a>
+      <InterfacePanel>
+        <span />
+        <span on:click={handleGameEnter}>Enter</span><br />
         <span
-          onclick="localStorage.removeItem('userId');location.reload();">Logout</span>
-      </div>-->
+          on:click={() => {
+            localStorage.removeItem('userId');
+            location.reload();
+          }}>
+          Logout
+        </span>
+      </InterfacePanel>
+
+      <!---->
     {/if}
 
     <div id="start-prompt-lower">

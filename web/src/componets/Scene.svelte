@@ -1,5 +1,7 @@
 <script>
-  export let socket;
+  export let app;
+  let socket = app.socket;
+  let account = app.account;
 </script>
 
 <!-- AFRAME SCENE -->

@@ -1,5 +1,6 @@
 <script>
   export let icon;
+  export let iconRotation = "0deg";
 </script>
 
 <style>
@@ -28,7 +29,6 @@
   }
   .icon-inner {
     font-size: min(14vw, 140px);
-    transform: translate(-50%, -50%) rotate(270deg);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -50,7 +50,11 @@
   <div class="center" style="grid-template-columns: 1fr {icon ? '4fr' : ''};">
     {#if icon}
       <!-- with icon -->
-      <!-- icon goes here -->
+      <div class="icon">
+        <i
+          class="fas {icon} icon-inner"
+          style="transform: translate(-50%, -50%) rotate({iconRotation});" />
+      </div>
     {/if}
     <div class="text">
       <div class="text-inner">
@@ -58,14 +62,4 @@
       </div>
     </div>
   </div>
-  <!--<div class="start-prompt-icon-section">
-    <div class="start-prompt-icon">
-      <i class="fas fa-mobile-alt start-prompt-icon-inner" />
-    </div>
-    <div class="start-prompt-text">
-      <div class="start-prompt-text-inner">
-        Please turn your device to landscape
-      </div>
-    </div>
-  </div>-->
 </div>
