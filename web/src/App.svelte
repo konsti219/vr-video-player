@@ -1,5 +1,6 @@
 <script>
   import Scene from "./componets/Scene.svelte";
+  import Interface from "./componets/Interface.svelte";
 </script>
 
 <style>
@@ -16,4 +17,5 @@
 <!-- CONTAINER -->
 <main>
   <Scene />
+  <Interface />
 </main>

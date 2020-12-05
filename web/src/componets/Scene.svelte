@@ -1,14 +1,3 @@
-<!-- eslint: disable=css-unused-selector -->
-<style>
-  .a-enter-vr,
-  .a-enter-ar,
-  .a-enter-ar-button,
-  .a-enter-vr-button {
-    z-index: 0;
-    display: none;
-  }
-</style>
-
 <!-- AFRAME SCENE -->
 <a-scene keyboard-shortcuts="enterVR: false">
   <!-- ASSETS -->

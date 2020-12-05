@@ -16,3 +16,11 @@ main {
   font-family: "Roboto", sans-serif;
   color: var(--text-color);
 }
+
+.a-enter-vr,
+.a-enter-ar,
+.a-enter-ar-button,
+.a-enter-vr-button {
+  z-index: 0;
+  display: none;
+}
