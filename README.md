@@ -1,6 +1,6 @@
 # vr-video-player
 
-node/.env file
+.env file
 
 ```
 # Environment Config
