@@ -7,6 +7,8 @@ const fetch = require("node-fetch");
 const crypto = require("crypto");
 const friendcode = require("../../lib/friendcode.js");
 
+const prod = process.env.NODE_ENV == "production";
+
 // GOOGLE AUTH SETUP
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -28,7 +30,11 @@ module.exports = appData => {
 
   // url redirect to google login
   router.get("/", async (req, res) => {
-    res.redirect(authUrl);
+    if (prod) {
+      res.redirect(301, authUrl);
+    } else {
+      res.redirect(301, "http://" + process.env.DOMAIN + (prod ? "" : `:${process.env.PORT}`) + "/api/auth/google/callback?code=1234")
+    }
   });
 
   // after login with google
@@ -40,26 +46,45 @@ module.exports = appData => {
       return;
     }
 
-    // Get an access token based on the OAuth code
-    let tokens;
-    try {
-      tokens = (await oAuth2Client.getToken(code)).tokens;
-    } catch (e) {
-      res.status(401);
-      res.json({ message: "wrong code", status: 401 });
-      return;
-    }
-
-    // request userinfo (id + email + profile pic)
-    const resData = await fetch(
-      "https://www.googleapis.com/oauth2/v2/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${tokens.access_token}`
-        }
+    let data = {};
+    if (prod) {
+      // prod
+      // Get an access token based on the OAuth code
+      let tokens;
+      try {
+        tokens = (await oAuth2Client.getToken(code)).tokens;
+      } catch (e) {
+        res.status(401);
+        res.json({ message: "wrong code", status: 401 });
+        return;
       }
-    );
-    const data = await resData.json();
+
+      // request userinfo (id + email + profile pic)
+      const resData = await fetch(
+        "https://www.googleapis.com/oauth2/v2/userinfo",
+        {
+          headers: {
+            Authorization: `Bearer ${tokens.access_token}`
+          }
+        }
+      );
+      data = await resData.json();
+
+    } else {
+      // dev
+      if (req.query.code == "1234") {
+        data = {
+          id: process.env.TEST_USER_ID,
+          email: "test@example.com",
+          picture: "---"
+        }
+      } else {
+        res.status(401);
+        res.json({ message: "wrong code", status: 401 });
+        return;
+      }
+    }
+    console.log(data)
 
     // generate token
     const token = crypto.randomBytes(32).toString("hex");
@@ -96,15 +121,15 @@ module.exports = appData => {
 
     // set cookies (will be moved to localstorage by client)
     res.cookie("userId", id, {
-      secure: true,
+      secure: prod,
       sameSite: true
     });
     res.cookie("userToken", token, {
-      secure: true,
+      secure: prod,
       sameSite: true
     });
 
-    res.redirect(process.env.DOMAIN);
+    res.redirect(`http${prod?"s":""}://${process.env.DOMAIN}${prod ? "" : `:${process.env.PORT}`}`);
   });
 
   return router;

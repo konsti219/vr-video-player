@@ -23,7 +23,6 @@ module.exports = appData => {
 
   router.use("/auth", authRouter(router.appData));
   //router.use("/account", accountRouter(router.db));
-  //router.use("/servers", serverRouter(router.db));
 
   return router;
 };
