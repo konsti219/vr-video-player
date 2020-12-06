@@ -7,7 +7,6 @@
 
   let app = {};
   app.socket = io();
-  app.socket.on("connect", () => console.log("socket connected"));
 
   app.account = {};
   let inGame = false;
