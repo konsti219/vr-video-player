@@ -4,12 +4,22 @@
 const socketio = require("socket.io");
 const youtubeApi = require("./lib/youtube-api.js");
 
-const initSocketserver = async appData => {
+const sendAccount = async (socket, appData) => {
+  const user = await appData.db.findOne({ id: socket.userId });
+
+  socket.emit("account.info", {
+    id: user.id,
+    name: user.name,
+    friendCode: user.friendCode,
+  });
+};
+
+const initSocketserver = async (appData) => {
   const io = socketio(appData.server, {
-    pingInterval: 10000
+    pingInterval: 10000,
   });
 
-  io.on("connection", socket => {
+  io.on("connection", (socket) => {
     /*socket.on("videos", async p => {
       try {
         let videos = await youtubeApi.getVideos(p.region, p.category);
@@ -19,7 +29,7 @@ const initSocketserver = async appData => {
       } catch (e) {}
     });*/
 
-    socket.on("auth", async p => {
+    socket.on("auth", async (p) => {
       let valid = true;
       const users = await appData.db.find({ id: p.userId });
       if (users.length !== 1) valid = false;
@@ -31,14 +41,17 @@ const initSocketserver = async appData => {
       socket.emit("auth", { valid });
     });
 
-    socket.on("account", async p => {
-      const user = await appData.db.findOne({ id: socket.userId });
+    socket.on("account.info", async (p) => {
+      await sendAccount(socket, appData);
+    });
 
-      socket.emit("account", {
-        id: user.id,
-        name: user.name,
-        friendCode: user.friendCode
-      });
+    socket.on("account.namechange", async (p) => {
+      await appData.db.update(
+        { id: socket.userId },
+        { $set: { name: p.name } }
+      );
+
+      await sendAccount(socket, appData);
     });
   });
 
