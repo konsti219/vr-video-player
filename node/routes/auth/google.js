@@ -13,7 +13,7 @@ const prod = process.env.NODE_ENV == "production";
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
-  process.env.DOMAIN + "/api/auth/google/callback"
+  "https://" + process.env.DOMAIN + "/api/auth/google/callback"
 );
 const authUrl = oAuth2Client.generateAuthUrl({
   access_type: "offline",
