@@ -1,7 +1,33 @@
 <script>
   export let app;
+  export let inGame;
   let socket = app.socket;
   let account = app.account;
+
+  let keyboardActive = false;
+  let scene = "";
+
+  var input = "";
+  function updateInput(e) {
+    var code = parseInt(e.detail.code);
+    switch (code) {
+      case 8:
+        input = input.slice(0, -1);
+        break;
+      case 6:
+        alert("submitted");
+        var keyboard = document.querySelector("#keyboard");
+        document.querySelector("#input").setAttribute("value", input);
+        document.querySelector("#input").setAttribute("color", "blue");
+        keyboard.parentNode.removeChild(keyboard);
+        return;
+      default:
+        input = input + e.detail.value;
+        break;
+    }
+    document.querySelector("#input").setAttribute("value", input + "_");
+  }
+  document.addEventListener("a-keyboard-update", updateInput);
 </script>
 
 <!-- AFRAME SCENE -->
@@ -54,11 +80,7 @@
 
   <!---------------------->
 
-  <a-entity id="scene-content" />
-
-  <!---------------------->
-
-  <a-entity id="keyboard-wrapper" visible="false">
+  <a-entity id="keyboard-wrapper" visible={keyboardActive}>
     <a-entity
       id="keyboard"
       position="-0.2 1.6 -0.5"
@@ -74,6 +96,86 @@
   </a-entity>
 
   <!---------------------->
+
+  {#if scene == 'video'}
+    <a-entity>
+      <!-- VIDEO PLAYER -->
+      <a-video src="#stream" width="2" height="1.125" position="0 1.6 -1.5" />
+
+      <!-- CONTROLS -->
+      <a-image
+        id="controlPlay"
+        class="collidable"
+        position="0 0.7 -1.5"
+        scale="0.6 0.6" />
+
+      <a-image
+        id="loading"
+        position="0 1.6 -1.4"
+        src="#loadingImg"
+        scale="2 1.125" />
+
+      <!-- RECOMMENDATIONS -->
+      <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
+        <!--<a-plane color="darkgrey" position="0 0 1"></a-plane>-->
+      </a-entity>
+
+      <a-image
+        id="browseUp"
+        class="collidable"
+        position="1.25 1.9 -1.5"
+        scale="0.5 0.5" />
+      <a-image
+        id="browseDown"
+        class="collidable"
+        position="1.25 1.3 -1.5"
+        scale="0.5 0.5" />
+
+      <!---------------------->
+    </a-entity>
+  {:else if scene == 'register'}
+    <template id="register-scene">
+      <a-text
+        font="dejavu"
+        color="#000"
+        value="Test"
+        scale="0.5 0.5 0.5"
+        position="-0.2 2 -1" />
+    </template>
+
+    <!---------------------->
+  {:else}
+    <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow />
+    <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow />
+    <a-cylinder
+      position="1 0.75 -3"
+      radius="0.5"
+      height="1.5"
+      color="#FFC65D"
+      shadow />
+
+    <!---------------------->
+  {/if}
+
+  <a-entity
+    geometry="primitive: plane; width: 1; height: 1;"
+    position="0 5 -5"
+    rotation="0 0 0"
+    material="color: red"
+    class="collidable"
+    on:click={() => {
+      inGame = false;
+      console.log('click');
+    }} />
+  <a-entity
+    geometry="primitive: plane; width: 1; height: 1;"
+    position="1 5 -5"
+    rotation="0 0 0"
+    material="color: blue"
+    class="collidable"
+    on:click={() => {
+      keyboardActive = !keyboardActive;
+    }} />
 
   <!-- ENVIRONMENT -->
   <a-entity

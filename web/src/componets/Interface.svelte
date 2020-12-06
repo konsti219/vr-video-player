@@ -5,7 +5,7 @@
   let socket = app.socket;
   let account = app.account;
 
-  app.inGame = false;
+  export let inGame;
   let isMobile = false;
   let orientationReady = false;
   let loggedIn = false;
@@ -94,7 +94,7 @@
 
   const handleGameEnter = () => {
     if (gameReady) {
-      app.inGame = true;
+      inGame = true;
     }
   };
 </script>
@@ -139,7 +139,7 @@
 </style>
 
 <!-- START PROMPT -->
-{#if !app.inGame || !gameReady}
+{#if !inGame || !gameReady}
   <div class="interface" on:click={handleClick}>
     <!-- upper logo -->
     <div id="start-prompt-logo">

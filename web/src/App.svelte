@@ -10,6 +10,7 @@
   app.socket.on("connect", () => console.log("socket connected"));
 
   app.account = {};
+  let inGame = false;
 </script>
 
 <style>
@@ -25,7 +26,7 @@
 
 <!-- CONTAINER -->
 <main>
-  <Scene {app} />
-  <Interface {app} />
+  <Interface {app} bind:inGame />
+  <Scene {app} bind:inGame />
   <Socket {app} />
 </main>
