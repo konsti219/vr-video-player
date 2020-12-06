@@ -10,7 +10,8 @@
   socket.on("account", (p) => {
     console.log(p);
 
-    account = p;
+    app.account = p;
+    app = app;
   });
 </script>
 

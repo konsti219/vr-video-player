@@ -182,6 +182,10 @@
       <!-- enter -->
       <InterfacePanel>
         <span />
+        <span>Welcome{#if app.account.name != '[NEW]'}
+            ,
+            {app.account.name}
+          {/if}</span><br />
         <span on:click={handleGameEnter}>Enter</span><br />
         <span
           on:click={() => {
