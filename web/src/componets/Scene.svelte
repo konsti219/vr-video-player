@@ -15,9 +15,6 @@
   let keyboardActive = false;
   let handleKeyboard = (e) => console.log(e.detail.text);
 
-  let cursorActive = false;
-  window.setTimeout(() => (cursorActive = true), 500);
-
   let scene;
   $: scene = inGame ? (account.name == "[NEW]" ? "register" : "video") : "";
 </script>
@@ -70,12 +67,10 @@
     movement-controls="enabled: {!keyboardActive}"
     position="0 0 0">
     <a-entity camera position="0 1.6 0" look-controls>
-      {#if cursorActive}
-        <a-entity
-          id="mouseCursor"
-          raycaster="objects: .collidable"
-          cursor="rayOrigin: mouse" />
-      {/if}
+      <a-entity
+        id="mouseCursor"
+        raycaster="objects: .collidable"
+        cursor="rayOrigin: mouse" />
 
       <Keyboard bind:keyboardActive on:submit={handleKeyboard} />
     </a-entity>
