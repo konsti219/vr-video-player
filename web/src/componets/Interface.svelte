@@ -3,9 +3,9 @@
 
   export let app;
   let socket = app.socket;
-  let account = app.account;
 
   export let inGame;
+  export let account;
   let isMobile = false;
   let orientationReady = false;
   let loggedIn = false;
@@ -110,31 +110,58 @@
     width: 100%;
   }
 
-  /* logo */
-  #start-prompt-logo {
+  /* elemnts in the corners */
+  .side-element {
     position: absolute;
+    width: fit-content;
+    padding: 1.5vh;
+  }
+
+  .top {
+    top: 1.5vh;
+  }
+  .bottom {
+    bottom: 1.5vh;
+  }
+  .left {
+    left: 1.5vh;
+  }
+  .right {
+    right: 1.5vh;
+  }
+
+  .logo {
     height: 1em;
-    top: 3vh;
-    left: 3vh;
     display: flex;
     align-items: center;
     width: calc(100vw - 6vh);
   }
-  #start-prompt-logo-img {
+  #logo-img {
     height: 1em;
   }
-  #start-prompt-logo-text {
+  #logo-text {
     font-size: 0.8em;
     padding-left: 0.5em;
   }
 
-  /* lower */
-  #start-prompt-lower {
-    position: absolute;
+  .small {
     height: fit-content;
     font-size: 0.8em;
-    bottom: 3vh;
-    left: 3vh;
+  }
+
+  .button {
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5vh;
+    cursor: pointer;
+  }
+  .button:hover {
+    background-color: var(--background-secondary);
+  }
+  .button > span {
+    padding-right: 0.8em;
+    padding-left: 0.1em;
   }
 </style>
 
@@ -142,12 +169,9 @@
 {#if !inGame || !gameReady}
   <div class="interface" on:click={handleClick}>
     <!-- upper logo -->
-    <div id="start-prompt-logo">
-      <img
-        id="start-prompt-logo-img"
-        src="/images/vr_icon.svg"
-        alt="VR-video-player logo" />
-      <span id="start-prompt-logo-text">VR Video Player</span>
+    <div class="side-element top left logo">
+      <img id="logo-img" src="/images/vr_icon.svg" alt="VR-video-player logo" />
+      <span id="logo-text">VR Video Player</span>
     </div>
 
     <!-- start prompt content -->
@@ -156,7 +180,7 @@
     <!--<InterfacePanel>Loading...</InterfacePanel>-->
 
     {#if !loggedIn}
-      <!-- login -->
+      <!-- login icon="fa-sign-in-alt" -->
       <InterfacePanel>
         Login to start
         <br /><br />
@@ -182,25 +206,35 @@
       <!-- enter -->
       <InterfacePanel>
         <span />
-        <span>Welcome{#if app.account.name != '[NEW]'}
+        <span>Welcome{#if console.log(account) || account.name != '[NEW]'}
             ,
-            {app.account.name}
+            {account.name}
           {/if}</span><br />
         <span on:click={handleGameEnter}>Enter</span><br />
-        <span
-          on:click={() => {
-            localStorage.removeItem('userId');
-            location.reload();
-          }}>
-          Logout
-        </span>
       </InterfacePanel>
+
+      <!-- logout and exit buttons -->
+      <div
+        class="side-element top right button"
+        on:click={() => document.exitFullscreen()}>
+        <span>Exit</span>
+        <i class="fas fa-door-open" />
+      </div>
+      <div
+        class="side-element bottom right button"
+        on:click={() => {
+          localStorage.removeItem('userId');
+          location.reload();
+        }}>
+        <span>Sign out</span>
+        <i class="fas fa-sign-out-alt" />
+      </div>
 
       <!---->
     {/if}
 
-    <div id="start-prompt-lower">
-      <a href="/privacy.html">Privacy Policy</a>
+    <div class="side-element bottom left small">
+      <a class="link" href="/privacy.html">Privacy Policy</a>
     </div>
   </div>
   <!-- START PROMPT END -->
