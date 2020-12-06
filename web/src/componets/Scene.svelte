@@ -1,7 +1,7 @@
 <script>
   import "aframe";
   import "aframe-extras";
-  import "./../lib/aframe-keyboard.min.js";
+  //import "./../lib/aframe-keyboard.min.js";
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/Register.svelte";
