@@ -1,33 +1,25 @@
 <script>
+  import "aframe";
+  import "aframe-extras";
+  import "./../lib/aframe-keyboard.min.js";
+
+  import Keyboard from "./scene-componets/Keyboard.svelte";
+  import RegisterScene from "./scene-componets/Register.svelte";
+
   export let app;
-  export let inGame;
   let socket = app.socket;
-  let account = app.account;
+
+  export let inGame;
+  export let account;
 
   let keyboardActive = false;
-  let scene = "";
+  let handleKeyboard = (e) => console.log(e.detail.text);
 
-  var input = "";
-  function updateInput(e) {
-    var code = parseInt(e.detail.code);
-    switch (code) {
-      case 8:
-        input = input.slice(0, -1);
-        break;
-      case 6:
-        alert("submitted");
-        var keyboard = document.querySelector("#keyboard");
-        document.querySelector("#input").setAttribute("value", input);
-        document.querySelector("#input").setAttribute("color", "blue");
-        keyboard.parentNode.removeChild(keyboard);
-        return;
-      default:
-        input = input + e.detail.value;
-        break;
-    }
-    document.querySelector("#input").setAttribute("value", input + "_");
-  }
-  document.addEventListener("a-keyboard-update", updateInput);
+  let cursorActive = false;
+  window.setTimeout(() => (cursorActive = true), 500);
+
+  let scene;
+  $: scene = inGame ? (account.name == "[NEW]" ? "register" : "video") : "";
 </script>
 
 <!-- AFRAME SCENE -->
@@ -60,8 +52,8 @@
   <!---------------------->
 
   <!-- CURSOR/CAMERA -->
-  <a-camera universal-controls>
-    <!--<a-entity
+
+  <!--<a-entity
             id="cursor"
             cursor="fuse: true; fuseTimeout: 1000"
             position="0 0 -1"
@@ -72,27 +64,21 @@
             animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
             raycaster="objects: .collidable"
           ></a-entity>-->
-    <a-entity
-      id="mouseCursor"
-      raycaster="objects: .collidable"
-      cursor="rayOrigin: mouse" />
-  </a-camera>
 
-  <!---------------------->
+  <a-entity
+    id="rig"
+    movement-controls="enabled: {!keyboardActive}"
+    position="0 0 0">
+    <a-entity camera position="0 1.6 0" look-controls>
+      {#if cursorActive}
+        <a-entity
+          id="mouseCursor"
+          raycaster="objects: .collidable"
+          cursor="rayOrigin: mouse" />
+      {/if}
 
-  <a-entity id="keyboard-wrapper" visible={keyboardActive}>
-    <a-entity
-      id="keyboard"
-      position="-0.2 1.6 -0.5"
-      a-keyboard
-      style="display: none" />
-    <a-text
-      id="input"
-      font="dejavu"
-      color="#000"
-      value="Input value..."
-      scale="0.5 0.5 0.5"
-      position="-0.2 2 -1" />
+      <Keyboard bind:keyboardActive on:submit={handleKeyboard} />
+    </a-entity>
   </a-entity>
 
   <!---------------------->
@@ -134,14 +120,7 @@
       <!---------------------->
     </a-entity>
   {:else if scene == 'register'}
-    <template id="register-scene">
-      <a-text
-        font="dejavu"
-        color="#000"
-        value="Test"
-        scale="0.5 0.5 0.5"
-        position="-0.2 2 -1" />
-    </template>
+    <RegisterScene bind:keyboardActive bind:handleKeyboard bind:socket />
 
     <!---------------------->
   {:else}

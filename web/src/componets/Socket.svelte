@@ -16,10 +16,10 @@
   });
 
   socket.on("auth", (p) => {
-    socket.emit("account", {});
+    socket.emit("account.info", {});
   });
 
-  socket.on("account", (p) => {
+  socket.on("account.info", (p) => {
     console.log(p);
     account = p;
   });

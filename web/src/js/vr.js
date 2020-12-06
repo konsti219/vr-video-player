@@ -4,8 +4,6 @@
 // TODO: controls & ended
 // TODO: night mode
 
-
-
 let player = {
   playing: false,
   loaded: false,
@@ -13,7 +11,7 @@ let player = {
   videos: [],
   watched: [],
   page: 0,
-  nightmode: false
+  nightmode: false,
 };
 let video = document.querySelector("#stream");
 
@@ -59,7 +57,7 @@ const playStart = () => {
 };
 
 // LOAD VIDEO
-const loadVideo = id => {
+const loadVideo = (id) => {
   // load via seprate service with seperate proxy
   video.setAttribute(
     "src",
@@ -101,7 +99,7 @@ const createVideoEntity = (thumbnail, title, creator, id) => {
     "material",
     "color: black; shader: flat; transparent: true; opacity: 0;"
   );
-  entity.onclick = e => {
+  entity.onclick = (e) => {
     console.log(e.target.id);
     loadVideo(e.target.id.substring(4, 15));
   };
@@ -223,37 +221,3 @@ browseDown.addEventListener("mouseenter", () => {
 browseDown.addEventListener("mouseleave", () => {
   browseDown.setAttribute("src", getIcon("f063", "darkgrey", 128));
 });*/
-
-var input = "";
-function updateInput(e) {
-  var code = parseInt(e.detail.code);
-  switch (code) {
-    case 8:
-      input = input.slice(0, -1);
-      break;
-    case 6:
-      alert("submitted");
-      var keyboard = document.querySelector("#keyboard");
-      document.querySelector("#input").setAttribute("value", input);
-      document.querySelector("#input").setAttribute("color", "blue");
-      keyboard.parentNode.removeChild(keyboard);
-      return;
-    default:
-      input = input + e.detail.value;
-      break;
-  }
-  document.querySelector("#input").setAttribute("value", input + "_");
-}
-document.addEventListener("a-keyboard-update", updateInput);
-
-app.loadScene = id => {
-  $("#scene-content").empty();
-
-  let sceneContent = $("#scene-content");
-  let template = $(id)[0];
-  console.log(template)
-
-  let clone = template.content.cloneNode(true);
-
-  sceneContent.append(clone);
-};
