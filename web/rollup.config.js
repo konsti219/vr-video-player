@@ -4,7 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import css from "rollup-plugin-css-only";
 import { terser } from "rollup-plugin-terser";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 const prod = process.env.NODE_ENV == "production";
 
@@ -29,7 +29,10 @@ export default {
       dedupe: ["svelte"],
     }),
     commonjs(),
-    prod && terser()
+    prod &&
+      terser({
+        output: { comments: false },
+      }),
   ],
   watch: {
     clearScreen: false,
