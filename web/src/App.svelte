@@ -8,7 +8,7 @@
   let app = {};
   app.socket = io();
 
-  app.account = {};
+  let account = {};
   let inGame = false;
 </script>
 
@@ -25,7 +25,7 @@
 
 <!-- CONTAINER -->
 <main>
-  <Interface {app} bind:inGame />
-  <Scene {app} bind:inGame />
-  <Socket {app} />
+  <Interface {app} bind:account bind:inGame />
+  <Scene {app} bind:account bind:inGame />
+  <Socket {app} bind:account />
 </main>

@@ -1,7 +1,7 @@
 <script>
   export let app;
+  export let account;
   let socket = app.socket;
-  let account = app.account;
 
   let disconnectTimer = window.setTimeout(() => location.reload(), 10000);
 
@@ -22,8 +22,7 @@
   socket.on("account", (p) => {
     console.log(p);
 
-    app.account = p;
-    app = app;
+    account = p;
   });
 </script>
 
