@@ -1,7 +1,7 @@
 <script>
   export let app;
+  export let account;
   let socket = app.socket;
-  let account = app.account;
 
   socket.on("auth", (p) => {
     socket.emit("account", {});
@@ -10,8 +10,7 @@
   socket.on("account", (p) => {
     console.log(p);
 
-    app.account = p;
-    app = app;
+    account = p;
   });
 </script>
 
