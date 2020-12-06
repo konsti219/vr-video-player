@@ -21,7 +21,6 @@
 
   socket.on("account", (p) => {
     console.log(p);
-
     account = p;
   });
 </script>

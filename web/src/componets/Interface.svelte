@@ -148,6 +148,13 @@
     height: fit-content;
     font-size: 0.8em;
   }
+  .big {
+    font-size: 2em;
+    width: fit-content;
+    padding: 1.5vh;
+    margin: 0 auto;
+    border: 3px solid var(--background-secondary);
+  }
 
   .button {
     font-size: 1.5em;
@@ -205,12 +212,9 @@
     {:else}
       <!-- enter -->
       <InterfacePanel>
-        <span />
-        <span>Welcome{#if console.log(account) || account.name != '[NEW]'}
-            ,
-            {account.name}
-          {/if}</span><br />
-        <span on:click={handleGameEnter}>Enter</span><br />
+        <span>Welcome{#if account.name != '[NEW]'}, {account.name}{/if}</span>
+        <br /><br />
+        <span class="button big" on:click={handleGameEnter}>Start</span><br />
       </InterfacePanel>
 
       <!-- logout and exit buttons -->
