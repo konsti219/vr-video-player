@@ -45,7 +45,7 @@ const initSocketserver = async (appData) => {
       await sendAccount(socket, appData);
     });
 
-    socket.on("account.namechange", async (p) => {
+    socket.on("account.changename", async (p) => {
       await appData.db.update(
         { id: socket.userId },
         { $set: { name: p.name } }

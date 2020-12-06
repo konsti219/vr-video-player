@@ -3,23 +3,25 @@
 // LIBS
 const Datastore = require("nedb-promises");
 
-const initDatabase = async path => {
+const initDatabase = async (path) => {
   const db = Datastore.create({
     filename: path,
-    autoload: true
+    autoload: true,
   });
 
   db.ensureIndex({ fieldName: "id", unique: true });
   db.ensureIndex({ fieldName: "googleId", unique: true });
   db.ensureIndex({ fieldName: "friendCode", unique: true });
-  
-  console.log(await db.find({}))
-  
+
+  // dev db wiper
+  // await db.remove({}, { multi: true });
+
+  console.log(await db.find({}));
+
   return db;
 };
 
 module.exports = initDatabase;
-
 
 /*
 DB STRUCTURE
