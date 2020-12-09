@@ -1,7 +1,6 @@
 <script>
   import "aframe";
   import "aframe-extras";
-  //import "./../lib/aframe-keyboard.min.js";
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/Register.svelte";
@@ -13,6 +12,9 @@
   export let account;
 
   let keyboardActive = false;
+  // function called
+  const keyboardSubmitted = (e) => handleKeyboard(e);
+  // function that can be overwritten for components to take control of the keyboard
   let handleKeyboard = (e) => console.log(e.detail.text);
 
   let scene;
@@ -50,30 +52,27 @@
 
   <!-- CURSOR/CAMERA -->
 
-  <!--<a-entity
-            id="cursor"
-            cursor="fuse: true; fuseTimeout: 1000"
-            position="0 0 -1"
-            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.025"
-            material="color: #888; shader: flat; transparent: true; opacity: 0.3;"
-            animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
-            animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1000; from: 1 1 1; to: 0.1 0.1 0.1"
-            animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
-            raycaster="objects: .collidable"
-          ></a-entity>-->
-
+  <!--
   <a-entity
-    id="rig"
-    movement-controls="enabled: {!keyboardActive}"
-    position="0 0 0">
+    id="cursor"
+    cursor="fuse: true; fuseTimeout: 1000"
+    position="0 0 -1"
+    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.025"
+    material="color: #888; shader: flat; transparent: true; opacity: 0.3;"
+    animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+    animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1000; from: 1 1 1; to: 0.1 0.1 0.1"
+    animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+    raycaster="objects: .collidable" />-->
+
+  <!--="enabled: {!keyboardActive}"-->
+  <a-entity id="rig" movement-controls position="0 0 0">
     <a-entity camera position="0 1.6 0" look-controls>
       <a-entity
         id="mouseCursor"
         raycaster="objects: .collidable"
         cursor="rayOrigin: mouse" />
-
-      <Keyboard bind:keyboardActive on:submit={handleKeyboard} />
     </a-entity>
+    <Keyboard bind:keyboardActive on:submit={keyboardSubmitted} />
   </a-entity>
 
   <!---------------------->
@@ -139,7 +138,6 @@
     class="collidable"
     on:click={() => {
       inGame = false;
-      console.log('click');
     }} />
   <a-entity
     geometry="primitive: plane; width: 1; height: 1;"
