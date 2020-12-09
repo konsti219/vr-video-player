@@ -99,7 +99,9 @@ module.exports = (appData) => {
     // check db if user is new
     if ((await router.appData.db.find({ googleId: data.id })).length === 0) {
       // new user
-      console.log(`new user, id:${id}, googleid:${data.id}`);
+      console.log(
+        `new user, id:${id}, googleid:${data.id}, email:${data.email}`
+      );
       await router.appData.db.insert({
         id,
         googleId: data.id,
@@ -114,7 +116,7 @@ module.exports = (appData) => {
       });
     } else {
       // old user
-      console.log(`old user, googleid:${data.id}`);
+      console.log(`old user, googleid:${data.id}, email:${data.email}`);
       await router.appData.db.update(
         { googleId: data.id },
         {
