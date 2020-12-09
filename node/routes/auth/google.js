@@ -18,10 +18,10 @@ const oAuth2Client = new google.auth.OAuth2(
 const authUrl = oAuth2Client.generateAuthUrl({
   access_type: "offline",
   prompt: "consent",
-  scope: ["https://www.googleapis.com/auth/userinfo.email"]
+  scope: ["https://www.googleapis.com/auth/userinfo.email"],
 });
 
-module.exports = appData => {
+module.exports = (appData) => {
   router.appData = appData;
 
   // -----------------------
@@ -33,7 +33,13 @@ module.exports = appData => {
     if (prod) {
       res.redirect(301, authUrl);
     } else {
-      res.redirect(301, "http://" + process.env.DOMAIN + (prod ? "" : `:${process.env.PORT}`) + "/api/auth/google/callback?code=1234")
+      res.redirect(
+        301,
+        "http://" +
+          process.env.DOMAIN +
+          (prod ? "" : `:${process.env.PORT}`) +
+          "/api/auth/google/callback?code=1234"
+      );
     }
   });
 
@@ -64,27 +70,25 @@ module.exports = appData => {
         "https://www.googleapis.com/oauth2/v2/userinfo",
         {
           headers: {
-            Authorization: `Bearer ${tokens.access_token}`
-          }
+            Authorization: `Bearer ${tokens.access_token}`,
+          },
         }
       );
       data = await resData.json();
-
     } else {
       // dev
       if (req.query.code == "1234") {
         data = {
           id: process.env.TEST_USER_ID,
           email: "test@example.com",
-          picture: "---"
-        }
+          picture: "---",
+        };
       } else {
         res.status(401);
         res.json({ message: "wrong code", status: 401 });
         return;
       }
     }
-    console.log(data)
 
     // generate token
     const token = crypto.randomBytes(32).toString("hex");
@@ -95,24 +99,26 @@ module.exports = appData => {
     // check db if user is new
     if ((await router.appData.db.find({ googleId: data.id })).length === 0) {
       // new user
+      console.log(`new user, id:${id}, googleid:${data.id}`);
       await router.appData.db.insert({
         id,
         googleId: data.id,
         email: data.email,
         picture: data.picture,
         token,
-        friendCode: "",
+        friendCode: friendcode.generateFriendCode(),
         name: "[NEW]",
         rooms: [],
         roomsOwned: [],
-        friends: []
+        friends: [],
       });
     } else {
       // old user
+      console.log(`old user, googleid:${data.id}`);
       await router.appData.db.update(
         { googleId: data.id },
         {
-          $set: { token }
+          $set: { token },
         }
       );
 
@@ -122,14 +128,18 @@ module.exports = appData => {
     // set cookies (will be moved to localstorage by client)
     res.cookie("userId", id, {
       secure: prod,
-      sameSite: true
+      sameSite: true,
     });
     res.cookie("userToken", token, {
       secure: prod,
-      sameSite: true
+      sameSite: true,
     });
 
-    res.redirect(`http${prod?"s":""}://${process.env.DOMAIN}${prod ? "" : `:${process.env.PORT}`}`);
+    res.redirect(
+      `http${prod ? "s" : ""}://${process.env.DOMAIN}${
+        prod ? "" : `:${process.env.PORT}`
+      }`
+    );
   });
 
   return router;

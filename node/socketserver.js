@@ -7,11 +7,13 @@ const youtubeApi = require("./lib/youtube-api.js");
 const sendAccount = async (socket, appData) => {
   const user = await appData.db.findOne({ id: socket.userId });
 
-  socket.emit("account.info", {
-    id: user.id,
-    name: user.name,
-    friendCode: user.friendCode,
-  });
+  if (user) {
+    socket.emit("account.info", {
+      id: user.id,
+      name: user.name,
+      friendCode: user.friendCode,
+    });
+  }
 };
 
 const initSocketserver = async (appData) => {
