@@ -131,12 +131,10 @@
     <!---------------------->
   {/if}
 
-  <a-entity
-    geometry="primitive: plane; width: 1; height: 1;"
+  <VrButton
     position="0 5 -5"
-    rotation="0 0 0"
-    material="color: red"
-    class="collidable"
+    scale="0.9 0.9"
+    charcode="f52b"
     on:click={() => {
       inGame = false;
     }} />
