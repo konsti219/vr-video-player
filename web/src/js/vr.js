@@ -15,24 +15,6 @@ let player = {
 };
 let video = document.querySelector("#stream");
 
-const getIcon = (charcode, color, size) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d");
-
-  const fontSize = 800 / (1024 / size);
-  const position = size / 2;
-
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = color;
-  ctx.font = fontSize + "px FontAwesome";
-  ctx.fillText(String.fromCharCode("0x" + charcode), position, position);
-
-  return canvas.toDataURL();
-};
-
 // play functions
 const play = () => {
   //video.play();
@@ -170,23 +152,6 @@ const showVideoPage = () => {
 let control = document.querySelector("#controlPlay");
 /*control.setAttribute("src", getIcon("f04b", "darkgrey", 128));
 
-control.addEventListener("click", () => {
-  change();
-});
-
-control.addEventListener("mouseenter", () => {
-  control.setAttribute(
-    "src",
-    getIcon(player.playing ? "f04c" : "f04b", "#ccc", 128)
-  );
-});
-control.addEventListener("mouseleave", () => {
-  control.setAttribute(
-    "src",
-    getIcon(player.playing ? "f04c" : "f04b", "darkgrey", 128)
-  );
-});
-
 // recommendation browsing
 // up
 let browseUp = document.querySelector("#browseUp");
@@ -198,13 +163,6 @@ browseUp.addEventListener("click", () => {
   showVideoPage();
 });
 
-browseUp.addEventListener("mouseenter", () => {
-  browseUp.setAttribute("src", getIcon("f062", "#ccc", 128));
-});
-browseUp.addEventListener("mouseleave", () => {
-  browseUp.setAttribute("src", getIcon("f062", "darkgrey", 128));
-});
-
 // down
 let browseDown = document.querySelector("#browseDown");
 browseDown.setAttribute("src", getIcon("f063", "darkgrey", 128));
@@ -214,10 +172,4 @@ browseDown.addEventListener("click", () => {
   if (player.page > 4) player.page = 0;
   showVideoPage();
 });
-
-browseDown.addEventListener("mouseenter", () => {
-  browseDown.setAttribute("src", getIcon("f063", "#ccc", 128));
-});
-browseDown.addEventListener("mouseleave", () => {
-  browseDown.setAttribute("src", getIcon("f063", "darkgrey", 128));
-});*/
+*/
