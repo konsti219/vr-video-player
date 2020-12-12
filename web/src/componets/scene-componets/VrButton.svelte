@@ -3,6 +3,7 @@
 
   export let position = "0 1 -1";
   export let rotation = "0 0 0";
+  export let scale = "0.6 0.6";
   export let charcode = "f2b4";
   export let active = false;
 
@@ -65,4 +66,4 @@
   class="collidable"
   {position}
   {rotation}
-  scale="0.6 0.6" />
+  {scale} />

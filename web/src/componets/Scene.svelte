@@ -78,11 +78,6 @@
 
   <!---------------------->
 
-  <VrButton
-    on:click={() => console.log('click')}
-    charcode="f11c"
-    active={true} />
-
   {#if scene == 'video'}
     <a-entity>
       <!-- VIDEO PLAYER -->
@@ -145,12 +140,11 @@
     on:click={() => {
       inGame = false;
     }} />
-  <a-entity
-    geometry="primitive: plane; width: 1; height: 1;"
+  <VrButton
     position="1 5 -5"
-    rotation="0 0 0"
-    material="color: blue"
-    class="collidable"
+    scale="0.9 0.9"
+    charcode="f11c"
+    bind:active={keyboardActive}
     on:click={() => {
       keyboardActive = !keyboardActive;
     }} />
