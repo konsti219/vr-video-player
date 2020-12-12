@@ -3,16 +3,20 @@
 
   export let position = "0 1 -1";
   export let rotation = "0 0 0";
-  export let charcode;
+  export let charcode = "f2b4";
+  export let active = false;
 
   let image;
   let hovering = false;
-  const color1 = getComputedStyle(document.documentElement).getPropertyValue(
-    "--text-color"
-  );
-  const color2 = getComputedStyle(document.documentElement).getPropertyValue(
-    "--background-secondary"
-  );
+  const colorDefault = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue("--text-color");
+  const colorActive = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue("--link-color");
+  const colorHover = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue("--background-secondary");
 
   const drawIncon = () => {
     const size = 128;
@@ -26,7 +30,7 @@
 
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = hovering ? color2 : color1;
+    ctx.fillStyle = hovering ? colorHover : active ? colorActive : colorDefault;
     ctx.font = fontSize + "px FontAwesome";
     ctx.fillText(String.fromCharCode("0x" + charcode), position, position);
 
@@ -34,7 +38,6 @@
   };
 
   onMount(() => {
-    console.log(image);
     drawIncon();
   });
 

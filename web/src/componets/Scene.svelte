@@ -78,7 +78,10 @@
 
   <!---------------------->
 
-  <VrButton on:click={() => console.log('click')} charcode="f11c" />
+  <VrButton
+    on:click={() => console.log('click')}
+    charcode="f11c"
+    active={true} />
 
   {#if scene == 'video'}
     <a-entity>
