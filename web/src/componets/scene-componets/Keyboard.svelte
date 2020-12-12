@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import "aframe-super-keyboard";
+  import "./../../lib/index.js";
 
   export let keyboardActive;
 
