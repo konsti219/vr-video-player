@@ -4,6 +4,7 @@
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/Register.svelte";
+  import VrButton from "./scene-componets/VrButton.svelte";
 
   export let app;
   let socket = app.socket;
@@ -76,6 +77,8 @@
   </a-entity>
 
   <!---------------------->
+
+  <VrButton on:click={() => console.log('click')} charcode="f11c" />
 
   {#if scene == 'video'}
     <a-entity>
