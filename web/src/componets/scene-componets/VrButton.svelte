@@ -19,7 +19,7 @@
     document.documentElement
   ).getPropertyValue("--background-secondary");
 
-  const drawIncon = () => {
+  const drawIcon = (active) => {
     const size = 128;
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -39,24 +39,26 @@
   };
 
   onMount(() => {
-    drawIncon();
-    setTimeout(() => drawIncon(), 1000);
+    drawIcon(active);
+    setTimeout(() => drawIcon(active), 1000);
   });
 
   const handleEnter = () => {
     hovering = true;
-    drawIncon();
+    drawIcon(active);
   };
 
   const handleLeave = () => {
     hovering = false;
-    drawIncon();
+    drawIcon(active);
   };
 
   const dispatch = createEventDispatcher();
   const handleClick = () => {
     dispatch("click", {});
   };
+
+  $: image ? drawIcon(active) : "";
 </script>
 
 <a-image

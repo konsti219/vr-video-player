@@ -1,32 +1,28 @@
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import "aframe-super-keyboard";
 
   export let keyboardActive;
 
   const dispatch = createEventDispatcher();
 
-  onMount(() => {
-    document
-      .getElementById("keyboard")
-      .addEventListener("superkeyboarddismiss", (e) => {
-        console.log("dismissed");
-      });
+  const handleSubmit = (e) => {
+    dispatch("submit", {
+      text: e.detail.value,
+    });
+  };
 
-    document
-      .getElementById("keyboard")
-      .addEventListener("superkeyboardinput", (e) => {
-        dispatch("submit", {
-          text: e.detail.value,
-        });
-      });
-  });
+  const handleDismiss = (e) => {
+    keyboardActive = false;
+  };
 </script>
 
-<a-entity id="keyboard-wrapper" visible={keyboardActive}>
+{#if keyboardActive}
   <a-entity
     id="keyboard"
     super-keyboard="hand: #mouseCursor; imagePath:/images; multipleInputs:true"
     position="0 1.076 -0.5"
-    rotation="-30 0 0" />
-</a-entity>
+    rotation="-30 0 0"
+    on:superkeyboardinput={handleSubmit}
+    on:superkeyboarddismiss={handleDismiss} />
+{/if}
