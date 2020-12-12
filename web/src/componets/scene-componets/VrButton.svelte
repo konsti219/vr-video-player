@@ -32,7 +32,7 @@
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = hovering ? colorHover : active ? colorActive : colorDefault;
-    ctx.font = fontSize + "px FontAwesome";
+    ctx.font = `900 ${fontSize}px "Font Awesome\ 5 Free"`;
     ctx.fillText(String.fromCharCode("0x" + charcode), position, position);
 
     image.setAttribute("src", canvas.toDataURL());
@@ -40,6 +40,7 @@
 
   onMount(() => {
     drawIncon();
+    setTimeout(() => drawIncon(), 1000);
   });
 
   const handleEnter = () => {
