@@ -132,15 +132,15 @@
   {/if}
 
   <VrButton
-    position="0 5 -5"
-    scale="0.9 0.9"
+    position="0 3 -2"
+    scale="0.6 0.6"
     charcode="f52b"
     on:click={() => {
       inGame = false;
     }} />
   <VrButton
-    position="1 5 -5"
-    scale="0.9 0.9"
+    position="0.8 3 -2"
+    scale="0.6 0.6"
     charcode="f11c"
     bind:active={keyboardActive}
     on:click={() => {
