@@ -4,6 +4,7 @@
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/Register.svelte";
+  import VrButton from "./scene-componets/VrButton.svelte";
 
   export let app;
   let socket = app.socket;
@@ -130,21 +131,18 @@
     <!---------------------->
   {/if}
 
-  <a-entity
-    geometry="primitive: plane; width: 1; height: 1;"
-    position="0 5 -5"
-    rotation="0 0 0"
-    material="color: red"
-    class="collidable"
+  <VrButton
+    position="0 3 -2"
+    scale="0.6 0.6"
+    charcode="f52b"
     on:click={() => {
       inGame = false;
     }} />
-  <a-entity
-    geometry="primitive: plane; width: 1; height: 1;"
-    position="1 5 -5"
-    rotation="0 0 0"
-    material="color: blue"
-    class="collidable"
+  <VrButton
+    position="0.8 3 -2"
+    scale="0.6 0.6"
+    charcode="f11c"
+    bind:active={keyboardActive}
     on:click={() => {
       keyboardActive = !keyboardActive;
     }} />

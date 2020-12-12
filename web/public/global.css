@@ -2,6 +2,7 @@
   --background-primary: #3b3c40;
   --background-secondary: #626469;
   --text-color: #f5f5f7;
+  --link-color: #99a7de;
 }
 
 html,
@@ -24,5 +25,5 @@ main {
 }
 
 a {
-  color: #99a7de;
+  color: var(--link-color);
 }
