@@ -5,6 +5,7 @@
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/Register.svelte";
   import VrButton from "./scene-componets/VrButton.svelte";
+  import VrVideo from "./scene-componets/VrVideo.svelte";
 
   export let app;
   let socket = app.socket;
@@ -30,6 +31,12 @@
     <img
       src="/images/white_grid_thin.png"
       id="grid"
+      crossorigin="anonymous"
+      alt="" />
+
+    <img
+      src="/images/loading.png"
+      id="loadingImg"
       crossorigin="anonymous"
       alt="" />
   </a-assets>
@@ -62,48 +69,25 @@
     <Keyboard bind:keyboardActive on:submit={keyboardSubmitted} />
   </a-entity>
 
-  <!---------------------->
-
   {#if scene == 'video'}
-    <a-entity>
-      <!-- VIDEO PLAYER -->
-      <a-video src="#stream" width="2" height="1.125" position="0 1.6 -1.5" />
+    <VrVideo videoId="pXshjyCbYFg" />
 
-      <!-- CONTROLS -->
-      <a-image
-        id="controlPlay"
-        class="collidable"
-        position="0 0.7 -1.5"
-        scale="0.6 0.6" />
-
-      <a-image
-        id="loading"
-        position="0 1.6 -1.4"
-        src="#loadingImg"
-        scale="2 1.125" />
-
-      <!-- RECOMMENDATIONS -->
-      <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
-        <!--<a-plane color="darkgrey" position="0 0 1"></a-plane>-->
-      </a-entity>
-
-      <a-image
-        id="browseUp"
-        class="collidable"
-        position="1.25 1.9 -1.5"
-        scale="0.5 0.5" />
-      <a-image
-        id="browseDown"
-        class="collidable"
-        position="1.25 1.3 -1.5"
-        scale="0.5 0.5" />
-
-      <!---------------------->
+    <!-- RECOMMENDATIONS 
+    <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
     </a-entity>
+
+    <a-image
+      id="browseUp"
+      class="collidable"
+      position="1.25 1.9 -1.5"
+      scale="0.5 0.5" />
+    <a-image
+      id="browseDown"
+      class="collidable"
+      position="1.25 1.3 -1.5"
+      scale="0.5 0.5" />-->
   {:else if scene == 'register'}
     <RegisterScene bind:keyboardActive bind:handleKeyboard bind:socket />
-
-    <!---------------------->
   {:else}
     <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow />
     <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow />
@@ -113,8 +97,6 @@
       height="1.5"
       color="#FFC65D"
       shadow />
-
-    <!---------------------->
   {/if}
 
   <VrButton
