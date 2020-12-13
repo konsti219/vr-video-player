@@ -22,5 +22,6 @@
   font="dejavu"
   color="#000"
   scale="1 1 1"
-  position="-0.2 2.5 -3"
+  position="0 2.5 -3"
+  align="center"
   value="Welcome! \n Choose a name" />

@@ -1,9 +1,60 @@
 <script>
+  import { onDestroy } from "svelte";
+
+  import VrButton from "./VrButton.svelte";
   import VrVideo from "./VrVideo.svelte";
+
+  export let keyboardActive;
+  export let handleKeyboard;
+  export let socket;
+
+  socket.on("videos", (p) => {
+    console.log(p);
+  });
+
+  let pickingVideo = false;
+
+  const changeKeyboard = (k) => {};
+  const changePicking = () => {
+    pickingVideo = !pickingVideo;
+    if (pickingVideo) {
+      keyboardActive = true;
+      handleKeyboard = (e) => {
+        console.log("picked: ", e.detail.text);
+        keyboardActive = false;
+        pickingVideo = false;
+      };
+    } else {
+      keyboardActive = false;
+      handleKeyboard = (e) => console.log(e.detail.text);
+    }
+  };
+  $: changeKeyboard(keyboardActive);
+
+  onDestroy(() => {
+    keyboardActive = false;
+    handleKeyboard = (e) => console.log(e.detail.text);
+  });
 </script>
 
 <VrVideo position="0 1.7 -2" />
 
+<VrButton
+  position="2 1.5 -2"
+  scale="0.6 0.6"
+  charcode="f87c"
+  bind:active={pickingVideo}
+  on:click={changePicking} />
+
+{#if pickingVideo}
+  <a-text
+    font="dejavu"
+    color="#000"
+    position="2 2 -1.9"
+    scale="0.5 0.5"
+    align="center"
+    value="Pick a video by typing\n it's id into the keyboard \n(like 'iik25wqIuFo')" />
+{/if}
 <!-- RECOMMENDATIONS 
     <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
     </a-entity>
