@@ -70,7 +70,7 @@
   </a-entity>
 
   {#if scene == 'video'}
-    <VrVideo videoId="pXshjyCbYFg" />
+    <VrVideo videoId="ap-BkkrRg-o" />
 
     <!-- RECOMMENDATIONS 
     <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">

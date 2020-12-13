@@ -27,7 +27,11 @@
     video.pause();
   }
   export function change() {
-    //change
+    if (playing) {
+      pause();
+    } else {
+      play();
+    }
   }
 
   onMount(() => {
@@ -36,14 +40,7 @@
       loaded = true;
       if (autoplay) {
         play();
-      } /*else {
-        video.muted = true;
-        play();
-        setTimeout(() => {
-          pause();
-          video.muted = false;
-        }, 100);
-      }*/
+      }
     });
     video.addEventListener("play", () => (playing = true));
     video.addEventListener("pause", () => (playing = false));
