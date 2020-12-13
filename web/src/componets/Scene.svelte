@@ -28,24 +28,10 @@
 
   <a-assets>
     <img
-      src="https://cdn.glitch.com/4f89165b-bcad-4fd8-9ca4-f92e4ca028e4%2Fwhite_grid_thin.png?v=1585644085396"
+      src="/images/white_grid_thin.png"
       id="grid"
       crossorigin="anonymous"
       alt="" />
-
-    <img
-      src="https://cdn.glitch.com/4f89165b-bcad-4fd8-9ca4-f92e4ca028e4%2Floading.png?v=1589751881220"
-      id="loadingImg"
-      crossorigin="anonymous"
-      alt="" />
-
-    <!-- DISPLAY VIDEO STREAM this will be rendered in the scene -->
-    <video
-      id="stream"
-      crossorigin="anonymous"
-      src="https://cdn.glitch.com/4f89165b-bcad-4fd8-9ca4-f92e4ca028e4%2Floading.mp4?v=1589651403926">
-      <track kind="captions" />
-    </video>
   </a-assets>
 
   <!---------------------->
@@ -149,9 +135,9 @@
 
   <!-- ENVIRONMENT -->
   <a-entity
-    geometry="primitive: plane; width: 10000; height: 10000;"
+    geometry="primitive: plane; width: 1000; height: 1000;"
     rotation="-90 0 0"
-    material="src: #grid; repeat: 10000 10000; transparent: true; opacity:0.3;" />
+    material="src: #grid; repeat: 1000 1000; transparent: true; opacity:0.3;" />
   <!--<a-sky color="#dbdedb"></a-sky>-->
   <a-sky color="#333340" />
   <a-entity light="color: #FFF; intensity: 1; type: ambient;" />
