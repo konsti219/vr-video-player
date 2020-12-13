@@ -14,7 +14,12 @@
 
   let pickingVideo = false;
 
-  const changeKeyboard = (k) => {};
+  const changeKeyboard = (k) => {
+    if (!k && pickingVideo) {
+      pickingVideo = false;
+      handleKeyboard = (e) => console.log(e.detail.text);
+    }
+  };
   const changePicking = () => {
     pickingVideo = !pickingVideo;
     if (pickingVideo) {
@@ -23,6 +28,7 @@
         console.log("picked: ", e.detail.text);
         keyboardActive = false;
         pickingVideo = false;
+        handleKeyboard = (e) => console.log(e.detail.text);
       };
     } else {
       keyboardActive = false;
@@ -46,15 +52,14 @@
   bind:active={pickingVideo}
   on:click={changePicking} />
 
-{#if pickingVideo}
-  <a-text
-    font="dejavu"
-    color="#000"
-    position="2 2 -1.9"
-    scale="0.5 0.5"
-    align="center"
-    value="Pick a video by typing\n it's id into the keyboard \n(like 'iik25wqIuFo')" />
-{/if}
+<a-text
+  font="dejavu"
+  color="#000"
+  position="2 2 -1.9"
+  scale="0.5 0.5"
+  align="center"
+  value={pickingVideo ? "Pick a video by typing\n it's id into the keyboard \n(like 'iik25wqIuFo')" : 'Video picker'} />
+
 <!-- RECOMMENDATIONS 
     <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
     </a-entity>
