@@ -528,7 +528,9 @@ AFRAME.registerComponent("super-keyboard", {
 
     this.updateKeyColorPlane(this.keyHover.key, this.keyPressColor);
     setTimeout(() => {
-      this.updateKeyColorPlane(this.keyHover.key, this.keyHoverColor);
+      if (this.keyHover) {
+        this.updateKeyColorPlane(this.keyHover.key, this.keyHoverColor);
+      }
     }, 100);
     this.updateCursorPosition();
   },
