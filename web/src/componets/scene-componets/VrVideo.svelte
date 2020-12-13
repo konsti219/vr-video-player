@@ -2,6 +2,7 @@
   import VrButton from "./VrButton.svelte";
   import { onMount } from "svelte";
 
+  export let position = "0 0 0";
   export let videoId;
   export let playing = false;
   export let autoplay = false;
@@ -10,13 +11,15 @@
   let video;
 
   const setVideo = (id) => {
-    console.log("loading video");
-    loaded = false;
-    video.setAttribute(
-      "src",
-      "https://ytraw.glitch.me/watch?proxy=https://konsti-proxy.herokuapp.com/&v=" +
-        id
-    );
+    if (videoId && videoId !== "") {
+      console.log("loading video");
+      loaded = false;
+      video.setAttribute(
+        "src",
+        "https://ytraw.glitch.me/watch?proxy=https://konsti-proxy.herokuapp.com/&v=" +
+          id
+      );
+    }
   };
   $: video ? setVideo(videoId) : null;
 
@@ -53,22 +56,24 @@
   </video>
 </a-assets>
 
-{#if loaded}
-  <a-video src="#stream" width="2" height="1.125" position="0 1.7 -2" />
-{:else}
-  <a-image position="0 1.7 -2" src="#loadingImg" scale="2 1.125" />
-{/if}
+<a-entity {position}>
+  {#if loaded}
+    <a-video src="#stream" width="2" height="1.125" position="0 0 0" />
+  {:else}
+    <a-image position="0 0 0" src="#loadingImg" scale="2 1.125" />
+  {/if}
 
-{#if playing}
-  <VrButton
-    position="0 0.7 -2"
-    scale="0.6 0.6"
-    charcode="f04c"
-    on:click={pause} />
-{:else}
-  <VrButton
-    position="0 0.7 -2"
-    scale="0.6 0.6"
-    charcode="f04b"
-    on:click={play} />
-{/if}
+  {#if playing}
+    <VrButton
+      position="0 -1 0"
+      scale="0.6 0.6"
+      charcode="f04c"
+      on:click={pause} />
+  {:else}
+    <VrButton
+      position="0 -1 0"
+      scale="0.6 0.6"
+      charcode="f04b"
+      on:click={play} />
+  {/if}
+</a-entity>

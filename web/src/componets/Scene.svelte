@@ -3,9 +3,9 @@
   import "aframe-extras";
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
-  import RegisterScene from "./scene-componets/Register.svelte";
+  import RegisterScene from "./scene-componets/RegisterScene.svelte";
+  import VideoScene from "./scene-componets/VideoScene.svelte";
   import VrButton from "./scene-componets/VrButton.svelte";
-  import VrVideo from "./scene-componets/VrVideo.svelte";
 
   export let app;
   let socket = app.socket;
@@ -70,22 +70,7 @@
   </a-entity>
 
   {#if scene == 'video'}
-    <VrVideo videoId="ap-BkkrRg-o" />
-
-    <!-- RECOMMENDATIONS 
-    <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">
-    </a-entity>
-
-    <a-image
-      id="browseUp"
-      class="collidable"
-      position="1.25 1.9 -1.5"
-      scale="0.5 0.5" />
-    <a-image
-      id="browseDown"
-      class="collidable"
-      position="1.25 1.3 -1.5"
-      scale="0.5 0.5" />-->
+    <VideoScene bind:keyboardActive bind:handleKeyboard bind:socket />
   {:else if scene == 'register'}
     <RegisterScene bind:keyboardActive bind:handleKeyboard bind:socket />
   {:else}

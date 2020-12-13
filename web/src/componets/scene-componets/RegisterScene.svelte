@@ -1,6 +1,4 @@
 <script>
-  import socketIoMin from "socket.io-client/dist/socket.io.min";
-
   import { onDestroy, onMount } from "svelte";
   export let keyboardActive;
   export let handleKeyboard;
