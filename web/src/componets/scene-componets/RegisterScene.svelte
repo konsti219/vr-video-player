@@ -1,6 +1,4 @@
 <script>
-  import socketIoMin from "socket.io-client/dist/socket.io.min";
-
   import { onDestroy, onMount } from "svelte";
   export let keyboardActive;
   export let handleKeyboard;
@@ -24,5 +22,6 @@
   font="dejavu"
   color="#000"
   scale="1 1 1"
-  position="-0.2 2.5 -3"
+  position="0 2.5 -3"
+  align="center"
   value="Welcome! \n Choose a name" />

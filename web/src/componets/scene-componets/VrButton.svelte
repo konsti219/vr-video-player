@@ -58,7 +58,7 @@
     dispatch("click", {});
   };
 
-  $: image ? drawIcon(active) : "";
+  $: image ? drawIcon(active) : null;
 </script>
 
 <a-image
