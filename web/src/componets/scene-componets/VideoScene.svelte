@@ -13,11 +13,16 @@
   });
 
   let pickingVideo = false;
+  let vrVideo;
 
+  const disable = () => {
+    keyboardActive = false;
+    pickingVideo = false;
+    handleKeyboard = (e) => console.log(e.detail.text);
+  };
   const changeKeyboard = (k) => {
     if (!k && pickingVideo) {
-      pickingVideo = false;
-      handleKeyboard = (e) => console.log(e.detail.text);
+      disable();
     }
   };
   const changePicking = () => {
@@ -26,20 +31,17 @@
       keyboardActive = true;
       handleKeyboard = (e) => {
         console.log("picked: ", e.detail.text);
-        keyboardActive = false;
-        pickingVideo = false;
-        handleKeyboard = (e) => console.log(e.detail.text);
+
+        disable();
       };
     } else {
-      keyboardActive = false;
-      handleKeyboard = (e) => console.log(e.detail.text);
+      disable();
     }
   };
   $: changeKeyboard(keyboardActive);
 
   onDestroy(() => {
-    keyboardActive = false;
-    handleKeyboard = (e) => console.log(e.detail.text);
+    disable();
   });
 </script>
 
@@ -49,6 +51,7 @@
   position="2 1.5 -2"
   scale="0.6 0.6"
   charcode="f87c"
+  bind:this={vrVideo}
   bind:active={pickingVideo}
   on:click={changePicking} />
 
