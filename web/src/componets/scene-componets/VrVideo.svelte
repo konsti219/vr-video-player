@@ -11,8 +11,9 @@
   let video;
 
   const setVideo = (id) => {
+    console.log("loading video", id);
+
     if (videoId && videoId !== "") {
-      console.log("loading video");
       loaded = false;
       video.setAttribute(
         "src",
