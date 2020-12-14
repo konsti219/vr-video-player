@@ -2,8 +2,14 @@
 
 // LIBS
 const Datastore = require("nedb-promises");
+const fs = require("fs");
 
 const initDatabase = async (path) => {
+  if (!fs.existsSync("./.data/users.db")) {
+    fs.mkdirSync("./.data");
+    fs.writeFileSync("./.data/users.sb", "");
+  }
+
   const db = Datastore.create({
     filename: path,
     autoload: true,
