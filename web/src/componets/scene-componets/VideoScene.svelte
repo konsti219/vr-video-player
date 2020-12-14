@@ -18,7 +18,7 @@
 <VrVideo bind:this={vrVideo} bind:videoId position="0 1.7 -2" />
 
 <VideoPicker
-  position="2 1.5 -2"
+  position="1.8 1.5 -2"
   bind:keyboardActive
   bind:handleKeyboard
   on:pick={(e) => {

@@ -56,5 +56,5 @@
     position="0 0.5 0"
     scale="0.5 0.5"
     align="center"
-    value={pickingVideo ? "Pick a video by typing\n it's id into the keyboard \n(like 'iik25wqIuFo')" : 'Video picker'} />
+    value={pickingVideo ? "Pick a video by\ntyping it's id\ninto the keyboard \n(like 'iik25wqIuFo')" : 'Video picker'} />
 </a-entity>
