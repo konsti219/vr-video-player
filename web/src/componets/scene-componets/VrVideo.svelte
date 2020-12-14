@@ -58,10 +58,19 @@
 </a-assets>
 
 <a-entity {position}>
-  {#if loaded}
-    <a-video src="#stream" width="2" height="1.125" position="0 0 0" />
+  {#if videoId && videoId !== ''}
+    {#if loaded}
+      <a-video src="#stream" width="2" height="1.125" position="0 0 0" />
+    {:else}
+      <a-image position="0 0 0" src="#loadingImg" scale="2 1.125" />
+    {/if}
   {:else}
-    <a-image position="0 0 0" src="#loadingImg" scale="2 1.125" />
+    <a-text
+      font="dejavu"
+      color="#000"
+      position="0 0 0"
+      align="center"
+      value="No video seleted" />
   {/if}
 
   {#if playing}
