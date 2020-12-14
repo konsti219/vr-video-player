@@ -66,7 +66,11 @@
         raycaster="objects: .collidable"
         cursor="rayOrigin: mouse" />
     </a-entity>
-    <Keyboard bind:keyboardActive on:submit={keyboardSubmitted} />
+    <Keyboard
+      bind:keyboardActive
+      on:submit={keyboardSubmitted}
+      position="0 1.3 -0.3"
+      rotation="-30 0 0" />
   </a-entity>
 
   {#if scene == 'video'}
