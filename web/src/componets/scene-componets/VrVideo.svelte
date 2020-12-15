@@ -25,10 +25,14 @@
   $: video ? setVideo(videoId) : null;
 
   export function play() {
-    video.play();
+    if (loaded) {
+      video.play();
+    }
   }
   export function pause() {
-    video.pause();
+    if (loaded) {
+      video.pause();
+    }
   }
   export function change() {
     if (playing) {

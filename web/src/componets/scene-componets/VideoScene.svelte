@@ -15,7 +15,7 @@
   let vrVideo;
 </script>
 
-<VrVideo bind:this={vrVideo} bind:videoId position="0 1.7 -2" />
+<VrVideo bind:this={vrVideo} bind:videoId autoplay={true} position="0 1.7 -2" />
 
 <VideoPicker
   position="1.8 1.5 -2"
