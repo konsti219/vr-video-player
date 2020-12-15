@@ -4,17 +4,20 @@
 const socketio = require("socket.io");
 const youtubeApi = require("./lib/youtube-api.js");
 
-const sendAccount = async (socket, appData) => {
-  const user = await appData.db.findOne({ id: socket.userId });
+const authRouter = async (appData, socket, path, p) => {
+  if (path === "login") {
+    let valid = true;
+    const user = await appData.db.findOne({ id: p.userId });
+    if (!user) valid = false;
+    else {
+      valid = user.token === p.token;
+    }
 
-  if (user) {
-    socket.emit("account.info", {
-      id: user.id,
-      name: user.name,
-      friendCode: user.friendCode,
-    });
+    if (valid) socket.userId = p.userId;
+    socket.emit("auth.login", { valid });
   }
 };
+const accountRouter = require("./socketroutes/account.js");
 
 const initSocketserver = async (appData) => {
   const io = socketio(appData.server, {
@@ -30,31 +33,44 @@ const initSocketserver = async (appData) => {
         //console.log("sending", videos[0]);
       } catch (e) {}
     });*/
+    let socketRouters = {
+      auth: {
+        required: [],
+        next: authRouter,
+      },
+    };
+    socketRouters["account"] = {
+      required: ["userId"],
+      next: accountRouter,
+    };
+    socketRouters["room"] = {
+      required: ["userId"],
+      next: async () => {
+        console.log("room");
+      },
+    };
 
-    socket.on("auth", async (p) => {
-      let valid = true;
-      const users = await appData.db.find({ id: p.userId });
-      if (users.length !== 1) valid = false;
-      else {
-        valid = users[0].token === p.token;
+    socket.onAny(async (event, p) => {
+      const path = event.split(".");
+      if (path.length > 1) {
+        const routerPath = path[0];
+        const subPath = path.slice(1).join(".");
+
+        const router = socketRouters[routerPath];
+        if (
+          router &&
+          router.required.map((r) => !socket[r]).reduce((a, c) => a + c, 0) ===
+            0
+        ) {
+          await router.next(appData, socket, subPath, p);
+        }
       }
-
-      if (valid) socket.userId = p.userId;
-      socket.emit("auth", { valid });
     });
 
-    socket.on("account.info", async (p) => {
-      await sendAccount(socket, appData);
-    });
+    /*
 
-    socket.on("account.changename", async (p) => {
-      await appData.db.update(
-        { id: socket.userId },
-        { $set: { name: p.name } }
-      );
 
-      await sendAccount(socket, appData);
-    });
+    socket.on("room.default", async (p) => {});*/
   });
 
   return io;

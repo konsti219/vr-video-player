@@ -53,7 +53,7 @@
       loggedIn = data.valid;
 
       // start socket
-      socket.emit("auth", {
+      socket.emit("auth.login", {
         userId: localStorage.getItem("userId"),
         token: localStorage.getItem("token"),
       });

@@ -20,7 +20,7 @@
   let handleKeyboard = (e) => console.log(e.detail.text);
 
   let scene;
-  $: scene = inGame ? (account.name == "[NEW]" ? "register" : "video") : "";
+  $: scene = inGame ? (account.name === "[NEW]" ? "register" : "video") : "";
 </script>
 
 <!-- AFRAME SCENE -->
@@ -73,9 +73,9 @@
       rotation="-30 0 0" />
   </a-entity>
 
-  {#if scene == 'video'}
+  {#if scene === 'video'}
     <VideoScene bind:keyboardActive bind:handleKeyboard bind:socket />
-  {:else if scene == 'register'}
+  {:else if scene === 'register'}
     <RegisterScene bind:keyboardActive bind:handleKeyboard bind:socket />
   {:else}
     <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow />

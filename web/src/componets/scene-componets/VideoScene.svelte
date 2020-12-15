@@ -12,6 +12,8 @@
     console.log(p);
   });
 
+  socket.emit("room.default", {});
+
   let vrVideo;
 </script>
 

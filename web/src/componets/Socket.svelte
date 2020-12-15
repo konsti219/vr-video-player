@@ -15,7 +15,7 @@
     disconnectTimer = window.setTimeout(() => location.reload(), 10000);
   });
 
-  socket.on("auth", (p) => {
+  socket.on("auth.login", (p) => {
     socket.emit("account.info", {});
   });
 
