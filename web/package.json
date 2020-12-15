@@ -2,6 +2,8 @@
   "name": "vr-video-player-web",
   "version": "0.0.1",
   "description": "watch videos in vr",
+  "repository": "https://github.com/konsti219/vr-video-player",
+  "license": "GPL-3.0",
   "scripts": {
     "build": "rollup -c"
   },
