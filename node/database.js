@@ -5,9 +5,11 @@ const Datastore = require("nedb-promises");
 const fs = require("fs");
 
 const initDatabase = async (path) => {
-  if (!fs.existsSync("./.data/users.db")) {
+  if (!fs.existsSync("./.data")) {
     fs.mkdirSync("./.data");
-    fs.writeFileSync("./.data/users.sb", "");
+  }
+  if (!fs.existsSync("./.data/users.db")) {
+    fs.writeFileSync("./.data/users.db", "");
   }
 
   const db = Datastore.create({
@@ -55,7 +57,7 @@ users [
             role: "member/moderator/owner"
           }
         ],
-        permisssions: {
+        permissions: {
           join: "anyone",
           speak: "member/moderator/owner",
           hear: "member",
