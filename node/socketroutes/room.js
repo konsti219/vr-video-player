@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const shortId = require("../../lib/shortId.js");
 
 module.exports = async (appData, socket, path, p) => {
   if (path === "default") {
@@ -14,6 +15,7 @@ module.exports = async (appData, socket, path, p) => {
           $push: {
             roomsOwned: {
               id: crypto.randomBytes(16).toString("hex"),
+              roomCode: shortId.generate(),
               name: `${user.name}'s Room`,
               members: [],
               permisssions: {

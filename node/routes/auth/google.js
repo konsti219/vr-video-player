@@ -5,7 +5,7 @@ const router = express.Router();
 const google = require("googleapis").google;
 const fetch = require("node-fetch");
 const crypto = require("crypto");
-const friendcode = require("../../lib/friendcode.js");
+const shortId = require("../../lib/shortId");
 
 const prod = process.env.NODE_ENV == "production";
 
@@ -108,7 +108,7 @@ module.exports = (appData) => {
         email: data.email,
         picture: data.picture,
         token,
-        friendCode: friendcode.generateFriendCode(),
+        friendCode: shortId.generate(),
         name: "[NEW]",
         rooms: [],
         roomsOwned: [],
