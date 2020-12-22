@@ -53,10 +53,8 @@
       loggedIn = data.valid;
 
       // start socket
-      socket.emit("auth.login", {
-        userId: localStorage.getItem("userId"),
-        token: localStorage.getItem("token"),
-      });
+      socketLogin();
+      socket.on("connect", socketLogin);
     }
     if (!loggedIn) {
       // not present, remove
@@ -64,6 +62,12 @@
       localStorage.removeItem("token");
     }
   })();
+  const socketLogin = () => {
+    socket.emit("auth.login", {
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
+    });
+  };
 
   //
   //! UI Interactions
