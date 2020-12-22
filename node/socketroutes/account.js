@@ -1,13 +1,11 @@
 const sendAccount = async (socket, appData) => {
   const user = await appData.db.findOne({ id: socket.userId });
 
-  if (user) {
-    socket.emit("account.info", {
-      id: user.id,
-      name: user.name,
-      friendCode: user.friendCode,
-    });
-  }
+  socket.emit("account.info", {
+    id: user.id,
+    name: user.name,
+    friendCode: user.friendCode,
+  });
 };
 
 module.exports = async (appData, socket, path, p) => {

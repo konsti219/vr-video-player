@@ -13,6 +13,12 @@
   });
 
   socket.emit("room.default", {});
+  socket.on("room.join", (p) => {
+    console.log("room join", p);
+  });
+  socket.on("room.leave", (p) => {
+    console.log("room leave", p);
+  });
 
   let vrVideo;
 </script>

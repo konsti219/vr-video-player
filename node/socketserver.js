@@ -18,11 +18,13 @@ const authRouter = async (appData, socket, path, p) => {
   }
 };
 const accountRouter = require("./socketroutes/account.js");
+const roomRouter = require("./socketroutes/room.js");
 
 const initSocketserver = async (appData) => {
   const io = socketio(appData.server, {
     pingInterval: 10000,
   });
+  appData.rooms = {};
 
   io.on("connection", (socket) => {
     /*socket.on("videos", async p => {
@@ -45,9 +47,7 @@ const initSocketserver = async (appData) => {
     };
     socketRouters["room"] = {
       required: ["userId"],
-      next: async () => {
-        console.log("room");
-      },
+      next: roomRouter,
     };
 
     socket.onAny(async (event, p) => {
