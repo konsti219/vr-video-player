@@ -35,10 +35,10 @@ module.exports = (appData) => {
     } else {
       res.redirect(
         301,
-        "http://" +
-          process.env.DOMAIN +
-          (prod ? "" : `:${process.env.PORT}`) +
-          "/api/auth/google/callback?code=1234"
+        "//" +
+          req.headers.host +
+          "/api/auth/google/callback?code=1234" +
+          (req.query.user ? "&user=" + req.query.user : "")
       );
     }
   });
@@ -79,8 +79,8 @@ module.exports = (appData) => {
       // dev
       if (req.query.code == "1234") {
         data = {
-          id: process.env.TEST_USER_ID,
-          email: "test@example.com",
+          id: req.query.user ?? process.env.TEST_USER_ID,
+          email: `${req.query.user ?? process.env.TEST_USER_ID}@example.com`,
           picture: "---",
         };
       } else {
@@ -137,11 +137,7 @@ module.exports = (appData) => {
       sameSite: true,
     });
 
-    res.redirect(
-      `http${prod ? "s" : ""}://${process.env.DOMAIN}${
-        prod ? "" : `:${process.env.PORT}`
-      }`
-    );
+    res.redirect(301, "//" + req.headers.host);
   });
 
   return router;
