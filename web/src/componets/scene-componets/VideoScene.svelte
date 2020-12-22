@@ -1,4 +1,6 @@
 <script>
+  import { onMount, onDestroy } from "svelte";
+
   import VrVideo from "./VrVideo.svelte";
   import VideoPicker from "./VideoPicker.svelte";
 
@@ -8,19 +10,27 @@
 
   let videoId;
 
-  socket.on("videos", (p) => {
-    console.log(p);
-  });
-
-  socket.emit("room.default", {});
-  socket.on("room.join", (p) => {
-    console.log("room join", p);
-  });
-  socket.on("room.leave", (p) => {
-    console.log("room leave", p);
-  });
-
   let vrVideo;
+
+  onMount(() => {
+    socket.on("videos", (p) => {
+      console.log(p);
+    });
+
+    socket.emit("room.default", {});
+    socket.on("room.join", (p) => {
+      console.log("room join", p);
+    });
+    socket.on("room.leave", (p) => {
+      console.log("room leave", p);
+    });
+  });
+
+  onDestroy(() => {
+    socket.removeAllListeners("videos");
+    socket.removeAllListeners("room.join");
+    socket.removeAllListeners("room.leave");
+  });
 </script>
 
 <VrVideo bind:this={vrVideo} bind:videoId autoplay={true} position="0 1.7 -2" />
