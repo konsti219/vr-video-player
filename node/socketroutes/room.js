@@ -44,8 +44,10 @@ module.exports = async (appData, socket, path, p) => {
     // join
     console.log("join default room");
     await joinRoom(appData, socket, socket.userId, roomId);
-  } else if (path === "") {
-    //
+  } else if (path === "leave") {
+    if (socket.room) {
+      leaveRoom(appData, socket);
+    }
   }
 
   console.log(appData.rooms);
@@ -56,7 +58,7 @@ const joinRoom = async (appData, socket, ownerId, roomId) => {
   if (!owner) return;
   const room = owner.roomsOwned.filter((r) => r.id === roomId)[0];
   if (!room) return;
-  console.log(room);
+  console.log("join", socket.userId, roomId);
 
   if (room.permissions.join !== "anyone") {
     let member = room.members.filter((m) => m.id === socket.id);
@@ -95,6 +97,7 @@ const joinRoom = async (appData, socket, ownerId, roomId) => {
 };
 
 const leaveRoom = async (appData, socket) => {
+  console.log("leave", socket.userId, socket.room);
   appData.rooms[socket.room] = {
     inRoom: appData.rooms[socket.room].inRoom.filter(
       (m) => m.id !== socket.userId

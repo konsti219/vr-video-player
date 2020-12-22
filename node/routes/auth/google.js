@@ -31,10 +31,9 @@ module.exports = (appData) => {
   // url redirect to google login
   router.get("/", async (req, res) => {
     if (prod) {
-      res.redirect(301, authUrl);
+      res.redirect(authUrl);
     } else {
       res.redirect(
-        301,
         "//" +
           req.headers.host +
           "/api/auth/google/callback?code=1234" +
@@ -137,7 +136,7 @@ module.exports = (appData) => {
       sameSite: true,
     });
 
-    res.redirect(301, "//" + req.headers.host);
+    res.redirect("//" + req.headers.host);
   });
 
   return router;

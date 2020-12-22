@@ -30,6 +30,8 @@
     socket.removeAllListeners("videos");
     socket.removeAllListeners("room.join");
     socket.removeAllListeners("room.leave");
+
+    socket.emit("room.leave", {});
   });
 </script>
 
