@@ -1,11 +1,13 @@
 const crypto = require("crypto");
-const shortId = require("../../lib/shortId.js");
+const shortId = require("../lib/shortId.js");
 
 module.exports = async (appData, socket, path, p) => {
   if (path === "default") {
     const user = await appData.db.findOne({ id: socket.userId });
 
     const defaultRoom = user.roomsOwned.filter((r) => r.personal)[0];
+
+    let roomId = crypto.randomBytes(16).toString("hex");
     if (!defaultRoom) {
       console.log("creating room");
 
@@ -14,11 +16,11 @@ module.exports = async (appData, socket, path, p) => {
         {
           $push: {
             roomsOwned: {
-              id: crypto.randomBytes(16).toString("hex"),
+              id: roomId,
               roomCode: shortId.generate(),
               name: `${user.name}'s Room`,
               members: [],
-              permisssions: {
+              permissions: {
                 join: "anyone",
                 speak: "member",
                 hear: "member",
@@ -35,11 +37,13 @@ module.exports = async (appData, socket, path, p) => {
           },
         }
       );
+    } else {
+      roomId = defaultRoom.id;
     }
 
     // join
     console.log("join default room");
-    joinRoom(appData, socket, socket.userId, defaultRoom.id);
+    await joinRoom(appData, socket, socket.userId, roomId);
   } else if (path === "") {
     //
   }
@@ -50,8 +54,14 @@ module.exports = async (appData, socket, path, p) => {
 const joinRoom = async (appData, socket, ownerId, roomId) => {
   const owner = await appData.db.findOne({ id: ownerId });
   if (!owner) return;
-  const room = owner.roomsOwned.filter((r) => r.id === roomId);
+  const room = owner.roomsOwned.filter((r) => r.id === roomId)[0];
   if (!room) return;
+  console.log(room);
+
+  if (room.permissions.join !== "anyone") {
+    let member = room.members.filter((m) => m.id === socket.id);
+    console.log(member);
+  }
 
   // leave old room
   if (socket.room) {
@@ -68,7 +78,7 @@ const joinRoom = async (appData, socket, ownerId, roomId) => {
   // join
   socket.room = roomId;
   socket.join(roomId);
-  appData.rooms[socket.room].inRoom.push(socket.userId);
+  appData.rooms[socket.room].inRoom.push({ id: socket.userId });
 
   // emit events
   appData.io.in(roomId).emit("room.join", {
@@ -85,20 +95,33 @@ const joinRoom = async (appData, socket, ownerId, roomId) => {
 };
 
 const leaveRoom = async (appData, socket) => {
-  if (socket.room) {
-    appData.rooms[socket.room].inRoom = appData.rooms[
-      socket.room
-    ].inRoom.filter((m) => m.id !== socket.userId);
-    appData.io.in(roomId).emit("room.leave", {
-      user: socket.userId,
-      inRoom: appData.rooms[roomId].inRoom,
-    });
-    socket.leave(socket.room);
+  appData.rooms[socket.room] = {
+    inRoom: appData.rooms[socket.room].inRoom.filter(
+      (m) => m.id !== socket.userId
+    ),
+  };
+  appData.io.in(socket.room).emit("room.leave", {
+    user: socket.userId,
+    inRoom: appData.rooms[socket.room].inRoom,
+  });
+  socket.leave(socket.room);
 
-    if (appData.rooms[socket.room].inRoom.length === 0) {
-      appData.rooms[socket.room] = null;
-    }
-
-    socket.room = undefined;
+  if (appData.rooms[socket.room].inRoom.length === 0) {
+    delete appData.rooms[socket.room];
   }
+
+  delete socket.room;
+};
+
+const getPermLevel = (level) => {
+  if (level === "owner") {
+    return 3;
+  } else if (level === "moderator") {
+    return 2;
+  } else if (level === "member") {
+    return 1;
+  } else if (level === "anyone") {
+    return 0;
+  }
+  throw "unknow perm level";
 };
