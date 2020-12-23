@@ -7,10 +7,13 @@
   export let keyboardActive;
   export let handleKeyboard;
   export let socket;
+  export let account;
 
   let videoId;
 
   let vrVideo;
+  let activeRoom;
+  let inRoom;
 
   onMount(() => {
     socket.on("videos", (p) => {
@@ -20,9 +23,21 @@
     socket.emit("room.default", {});
     socket.on("room.join", (p) => {
       console.log("room join", p);
+
+      if (p.user === account.id) {
+        console.log("self join");
+
+        socket.emit("room.info", {});
+      }
     });
     socket.on("room.leave", (p) => {
       console.log("room leave", p);
+
+      if (p.user === account.id) {
+        console.log("self leave");
+        activeRoom = undefined;
+        inRoom = undefined;
+      }
     });
   });
 
@@ -32,6 +47,8 @@
     socket.removeAllListeners("room.leave");
 
     socket.emit("room.leave", {});
+    activeRoom = undefined;
+    inRoom = undefined;
   });
 </script>
 
@@ -44,6 +61,14 @@
   on:pick={(e) => {
     videoId = e.detail.pick;
   }} />
+
+<!-- 
+  TODO:
+  - show room info
+  - show room members / online
+  - allow room joining
+  - check room permissions
+-->
 
 <!-- RECOMMENDATIONS 
     <a-entity position="2 4.1 -1" id="watchList" rotation="0 -45 0">

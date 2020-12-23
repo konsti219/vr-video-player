@@ -74,7 +74,11 @@
   </a-entity>
 
   {#if scene === 'video'}
-    <VideoScene bind:keyboardActive bind:handleKeyboard bind:socket />
+    <VideoScene
+      bind:keyboardActive
+      bind:handleKeyboard
+      bind:socket
+      bind:account />
   {:else if scene === 'register'}
     <RegisterScene bind:keyboardActive bind:handleKeyboard bind:socket />
   {:else}

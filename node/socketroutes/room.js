@@ -48,6 +48,9 @@ module.exports = async (appData, socket, path, p) => {
     if (socket.room) {
       leaveRoom(appData, socket);
     }
+  } else if (path === "info") {
+    const roomId = p.id ?? socket.room;
+    if (!roomId) return;
   }
 
   console.log(appData.rooms);
