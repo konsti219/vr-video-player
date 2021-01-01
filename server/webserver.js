@@ -1,12 +1,12 @@
 // EXPRESS WEBSERVER
-const staticFiles = "../web/public/";
+const staticFiles = "../app/public/";
 
 // LIBS
 const express = require("express");
 const useragent = require("express-useragent");
 const path = require("path");
 
-const initWebserver = async appData => {
+const initWebserver = async (appData) => {
   const app = express();
   app.use(useragent.express());
   app.use(express.json());
@@ -30,7 +30,7 @@ const initWebserver = async appData => {
   // api
   const apiRouter = require("./routes/api");
   app.use("/api", apiRouter(appData));
-  
+
   return server;
 };
 
