@@ -1,0 +1,8 @@
+{
+  "name": "vr-video-player",
+  "private": true,
+  "workspaces": [
+    "app",
+    "server"
+  ]
+}
