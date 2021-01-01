@@ -9,7 +9,7 @@ module.exports = async (appData, socket, path, p) => {
 
     let roomId = crypto.randomBytes(16).toString("hex");
     if (!defaultRoomEntry) {
-      console.log("creating room");
+      console.log(`room creating default | id:${roomId} user:${socket.userId}`);
 
       await appData.roomsDb.insert({
         id: roomId,
@@ -52,7 +52,7 @@ module.exports = async (appData, socket, path, p) => {
     }
 
     // join
-    console.log("join default room");
+    console.log(`room join default | id:${roomId} user:${socket.userId}`);
     await joinRoom(appData, socket, roomId);
   } else if (path === "leave") {
     if (socket.room) {
@@ -65,17 +65,17 @@ module.exports = async (appData, socket, path, p) => {
     const room = await appData.roomsDb.findOne({ id: roomId });
     if (!room) return;
 
-    console.log("room info", roomId);
+    console.log(`room info | id:${roomId} user:${socket.userId}`);
     socket.emit("room.info", room);
   }
 
-  console.log(appData.rooms);
+  // console.log("room state | ", appData.rooms);
 };
 
 const joinRoom = async (appData, socket, roomId) => {
   const room = await appData.roomsDb.findOne({ id: roomId });
   if (!room) return;
-  console.log("join", socket.userId, roomId);
+  console.log(`room join | id:${roomId} user:${socket.userId}`);
 
   if (room.permissions.join !== "anyone") {
     let member = room.members.filter((m) => m.id === socket.id);
@@ -114,7 +114,7 @@ const joinRoom = async (appData, socket, roomId) => {
 };
 
 const leaveRoom = async (appData, socket) => {
-  console.log("leave", socket.userId, socket.room);
+  console.log(`room leave | id:${socket.room} user:${socket.userId}`);
   appData.rooms[socket.room] = {
     inRoom: appData.rooms[socket.room].inRoom.filter(
       (m) => m.id !== socket.userId
