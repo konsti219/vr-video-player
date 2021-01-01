@@ -23,7 +23,7 @@
     // check if token present
     if (localStorage.getItem("userId") && localStorage.getItem("token")) {
       // present, validate
-      console.log("checking token");
+      console.log("token check");
       const data = await (
         await fetch(
           `/api/auth/token/validate?userId=${localStorage.getItem(
@@ -33,14 +33,19 @@
       ).json();
       loggedIn = data.valid;
 
-      // start socket
-      socketLogin();
-      socket.on("connect", socketLogin);
+      console.log("token valid", loggedIn);
     }
     if (!loggedIn) {
       // not present, remove
       localStorage.removeItem("userId");
       localStorage.removeItem("token");
+    } else {
+      // start socket
+      // this may cause the auth.login to be sent multiple if the socket connects after this runs.
+      // But it is needed to ensure that if it reconnects it is reauthenticated.
+      // Also sending it multiple times won't cause issues
+      socketLogin();
+      socket.on("connect", socketLogin);
     }
   })();
   const socketLogin = () => {
