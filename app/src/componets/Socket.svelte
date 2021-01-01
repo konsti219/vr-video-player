@@ -1,3 +1,4 @@
+<!-- Logic Component -->
 <script>
   export let app;
 
@@ -13,3 +14,5 @@
     disconnectTimer = window.setTimeout(() => location.reload(), 10000);
   });
 </script>
+
+
