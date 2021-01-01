@@ -5,33 +5,43 @@ module.exports = async (appData, socket, path, p) => {
   if (path === "default") {
     const user = await appData.db.findOne({ id: socket.userId });
 
-    const defaultRoom = user.roomsOwned.filter((r) => r.personal)[0];
+    const defaultRoom = user.rooms.filter((r) => r.personal)[0];
 
     let roomId = crypto.randomBytes(16).toString("hex");
     if (!defaultRoom) {
       console.log("creating room");
 
+      await appData.roomsDb.insert({
+        id: roomId,
+        roomCode: shortId.generate(),
+        name: `${user.name}'s Room`,
+        members: [
+          {
+            id: socket.userId,
+            role: "owner",
+          },
+        ],
+        permissions: {
+          join: "anyone",
+          speak: "member",
+          hear: "member",
+          suggestVideo: "member",
+          controlVideo: "moderator",
+          selectVideo: "moderator",
+          kick: "moderator",
+          ban: "owner",
+          manage: "owner",
+        },
+        public: false,
+        personal: true,
+      });
+
       await appData.db.update(
         { id: socket.userId },
         {
           $push: {
-            roomsOwned: {
+            rooms: {
               id: roomId,
-              roomCode: shortId.generate(),
-              name: `${user.name}'s Room`,
-              members: [],
-              permissions: {
-                join: "anyone",
-                speak: "member",
-                hear: "member",
-                suggestVideo: "member",
-                controlVideo: "moderator",
-                selectVideo: "moderator",
-                kick: "moderator",
-                ban: "owner",
-                manage: "owner",
-              },
-              public: false,
               personal: true,
             },
           },
@@ -43,7 +53,7 @@ module.exports = async (appData, socket, path, p) => {
 
     // join
     console.log("join default room");
-    await joinRoom(appData, socket, socket.userId, roomId);
+    //await joinRoom(appData, socket, socket.userId, roomId);
   } else if (path === "leave") {
     if (socket.room) {
       leaveRoom(appData, socket);

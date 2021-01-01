@@ -110,7 +110,6 @@ module.exports = (appData) => {
         friendCode: shortId.generate(),
         name: "[NEW]",
         rooms: [],
-        roomsOwned: [],
         friends: [],
       });
     } else {

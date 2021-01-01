@@ -5,6 +5,8 @@ const sendAccount = async (socket, appData) => {
     id: user.id,
     name: user.name,
     friendCode: user.friendCode,
+    rooms: user.rooms,
+    friends: user.friends,
   });
 };
 

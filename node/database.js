@@ -3,20 +3,27 @@
 // LIBS
 const Datastore = require("nedb-promises");
 const fs = require("fs");
+const path = require("path");
 
-const initDatabase = async (path) => {
-  if (!fs.existsSync("./.data")) {
-    fs.mkdirSync("./.data");
+const prod = process.env.NODE_ENV == "production";
+
+const makeFiles = (filePath) => {
+  if (!fs.existsSync(path.dirname(filePath))) {
+    fs.mkdirSync(path.dirname(filePath));
   }
-  if (!fs.existsSync("./.data/users.db")) {
-    fs.writeFileSync("./.data/users.db", "");
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, "");
   }
+};
+
+const initDatabase = async (usersPath, roomsPath) => {
+  makeFiles(usersPath);
+  makeFiles(roomsPath);
 
   const db = Datastore.create({
-    filename: path,
+    filename: usersPath,
     autoload: true,
   });
-
   db.ensureIndex({ fieldName: "id", unique: true });
   db.ensureIndex({ fieldName: "googleId", unique: true });
   db.ensureIndex({ fieldName: "friendCode", unique: true });
@@ -24,9 +31,19 @@ const initDatabase = async (path) => {
   // dev db wiper
   // await db.remove({}, { multi: true });
 
-  console.log(await db.find({}));
+  const roomsDb = Datastore.create({
+    filename: roomsPath,
+    autoload: true,
+  });
+  roomsDb.ensureIndex({ fieldName: "id", unique: true });
+  roomsDb.ensureIndex({ fieldName: "roomCode", unique: true });
 
-  return db;
+  if (!prod) {
+    console.log(await db.find({}));
+    console.log(await roomsDb.find({}));
+  }
+
+  return { db, roomsDb };
 };
 
 module.exports = initDatabase;
@@ -42,33 +59,8 @@ users [
     friendCode: "",
     name: "",
     rooms: [
-      {
-        owner: "<owner id>",
-        id: "<group id>"
-      }
-    ],
-    roomsOwned: [
-      {
-        id: "",
-        name: "",
-        members: [
-          {
-            id: "",
-            role: "member/moderator/owner"
-          }
-        ],
-        permissions: {
-          join: "anyone",
-          speak: "member/moderator/owner",
-          hear: "member",
-          suggestVideo: "member",
-          controlVideo: "moderator",
-          selectVideo: "moderator",
-          kick: "moderator",
-          ban: "owner",
-          manage: "owner"
-        },
-        public: false,
+      { 
+        id: "<room id>",
         personal: true
       }
     ],
@@ -78,5 +70,30 @@ users [
   }
 ]
 
+rooms [
+  {
+    id: "",
+    name: "",
+    members: [
+      {
+        id: "",
+        role: "member/moderator/owner"
+      }
+    ],
+    permissions: {
+      join: "anyone",
+      speak: "member/moderator/owner",
+      hear: "member",
+      suggestVideo: "member",
+      controlVideo: "moderator",
+      selectVideo: "moderator",
+      kick: "moderator",
+      ban: "owner",
+      manage: "owner"
+    },
+    public: false,
+    personal: true
+  }
+]
 
 */
