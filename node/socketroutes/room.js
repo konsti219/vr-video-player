@@ -5,10 +5,10 @@ module.exports = async (appData, socket, path, p) => {
   if (path === "default") {
     const user = await appData.db.findOne({ id: socket.userId });
 
-    const defaultRoom = user.rooms.filter((r) => r.personal)[0];
+    const defaultRoomEntry = user.rooms.filter((r) => r.personal)[0];
 
     let roomId = crypto.randomBytes(16).toString("hex");
-    if (!defaultRoom) {
+    if (!defaultRoomEntry) {
       console.log("creating room");
 
       await appData.roomsDb.insert({
@@ -48,12 +48,12 @@ module.exports = async (appData, socket, path, p) => {
         }
       );
     } else {
-      roomId = defaultRoom.id;
+      roomId = defaultRoomEntry.id;
     }
 
     // join
     console.log("join default room");
-    //await joinRoom(appData, socket, socket.userId, roomId);
+    await joinRoom(appData, socket, roomId);
   } else if (path === "leave") {
     if (socket.room) {
       leaveRoom(appData, socket);
@@ -61,15 +61,15 @@ module.exports = async (appData, socket, path, p) => {
   } else if (path === "info") {
     const roomId = p.id ?? socket.room;
     if (!roomId) return;
+
+    console.log("room info", roomId);
   }
 
   console.log(appData.rooms);
 };
 
-const joinRoom = async (appData, socket, ownerId, roomId) => {
-  const owner = await appData.db.findOne({ id: ownerId });
-  if (!owner) return;
-  const room = owner.roomsOwned.filter((r) => r.id === roomId)[0];
+const joinRoom = async (appData, socket, roomId) => {
+  const room = await appData.roomsDb.findOne({ id: roomId });
   if (!room) return;
   console.log("join", socket.userId, roomId);
 
