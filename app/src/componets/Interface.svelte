@@ -216,7 +216,10 @@
     {:else}
       <!-- enter -->
       <InterfacePanel>
-        <span>Welcome{#if account.name != '[NEW]'}, {account.name}{/if}</span>
+        <span>Welcome{#if account.name && account.name != '[NEW]'}
+            ,
+            {account.name}
+          {/if}</span>
         <br /><br />
         <span class="button big" on:click={handleGameEnter}>Start</span><br />
       </InterfacePanel>
