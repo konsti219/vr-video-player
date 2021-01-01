@@ -48,7 +48,8 @@
   onDestroy(() => {
     socket.removeAllListeners("videos");
     socket.removeAllListeners("room.join");
-    socket.removeAllListeners("room.leave");
+    setTimeout(() => socket.removeAllListeners("room.leave"), 1000);
+    socket.removeAllListeners("room.info");
 
     socket.emit("room.leave", {});
     activeRoom = undefined;
