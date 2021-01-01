@@ -27,5 +27,5 @@
 <main>
   <Interface {app} bind:account bind:inGame />
   <Scene {app} bind:account bind:inGame />
-  <Socket {app} bind:account />
+  <Socket {app} />
 </main>

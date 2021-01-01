@@ -1,7 +1,5 @@
 <script>
   export let app;
-  export let account;
-  let socket = app.socket;
 
   let disconnectTimer = window.setTimeout(() => location.reload(), 10000);
 
@@ -14,17 +12,4 @@
     console.log("socket disconnected");
     disconnectTimer = window.setTimeout(() => location.reload(), 10000);
   });
-
-  socket.on("auth.login", (p) => {
-    socket.emit("account.info", {});
-  });
-
-  socket.on("account.info", (p) => {
-    console.log(p);
-    account = p;
-  });
 </script>
-
-<div style="display: none;">
-  <!-- Just a place for socket.io code -->
-</div>

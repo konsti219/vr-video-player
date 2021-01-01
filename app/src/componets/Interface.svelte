@@ -1,5 +1,6 @@
 <script>
   import InterfacePanel from "./InterfacePanel.svelte";
+  import LoginHandler from "./LoginHandler.svelte";
 
   export let app;
   let socket = app.socket;
@@ -19,60 +20,7 @@
   } catch (e) {}
   fullscreenActive = new URL(location.href).searchParams.get("novr") == "true";
 
-  //
-  //! LOGIN
-  //
-
-  // transfer cookie to ls, because setting cookies on server is easier
-  const getCookie = (cookie) => {
-    const val = document.cookie
-      .split("; ")
-      .find((row) => row.split("=")[0] === cookie);
-    return val ? val.split("=")[1] : val;
-  };
-  if (getCookie("userId")) {
-    localStorage.setItem("userId", getCookie("userId"));
-    localStorage.setItem("token", getCookie("userToken"));
-    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-  }
-
-  // check login
-  (async () => {
-    // check if token present
-    if (localStorage.getItem("userId") && localStorage.getItem("token")) {
-      // present, validate
-      console.log("checking token");
-      const data = await (
-        await fetch(
-          `/api/auth/token/validate?userId=${localStorage.getItem(
-            "userId"
-          )}&token=${localStorage.getItem("token")}`
-        )
-      ).json();
-      loggedIn = data.valid;
-
-      // start socket
-      socketLogin();
-      socket.on("connect", socketLogin);
-    }
-    if (!loggedIn) {
-      // not present, remove
-      localStorage.removeItem("userId");
-      localStorage.removeItem("token");
-    }
-  })();
-  const socketLogin = () => {
-    socket.emit("auth.login", {
-      userId: localStorage.getItem("userId"),
-      token: localStorage.getItem("token"),
-    });
-  };
-
-  //
   //! UI Interactions
-  //
-
   const handleResize = () => {
     orientationReady = !isMobile || window.innerHeight < window.innerWidth;
   };
@@ -176,6 +124,7 @@
   }
 </style>
 
+<LoginHandler bind:account bind:socket bind:loggedIn />
 <!-- START PROMPT -->
 {#if !inGame || !gameReady}
   <div class="interface" on:click={handleClick}>
