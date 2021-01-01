@@ -39,6 +39,10 @@
         inRoom = undefined;
       }
     });
+
+    socket.on("room.info", (p) => {
+      console.log("room info", p);
+    });
   });
 
   onDestroy(() => {

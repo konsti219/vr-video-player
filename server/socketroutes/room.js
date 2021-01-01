@@ -62,7 +62,11 @@ module.exports = async (appData, socket, path, p) => {
     const roomId = p.id ?? socket.room;
     if (!roomId) return;
 
+    const room = await appData.roomsDb.findOne({ id: roomId });
+    if (!room) return;
+
     console.log("room info", roomId);
+    socket.emit("room.info", room);
   }
 
   console.log(appData.rooms);
