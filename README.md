@@ -1,6 +1,6 @@
 # vr-video-player
 
-.env file
+### .env file
 
 ```
 # Environment Config
@@ -16,4 +16,16 @@ NODE_ENV=development/production
 
 # if NODE_ENV=development normal google login will be skipped and this id will be used instead
 TEST_USER_ID=abcd
+```
+
+### Build
+
+```
+cd app && yarn run build
+```
+
+### Start
+
+```
+cd server && yarn node index.js
 ```
