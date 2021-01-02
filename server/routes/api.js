@@ -3,10 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const authRouter = require("./auth/auth.js");
-const accountRouter = require("./account.js");
-//const serverRouter = require("./servers.js")
 
-module.exports = appData => {
+module.exports = (appData) => {
   router.appData = appData;
 
   // -----------------------
@@ -17,12 +15,11 @@ module.exports = appData => {
     res.status(200);
     res.json({
       code: 200,
-      status: "OK"
-    })
-  })
+      status: "OK",
+    });
+  });
 
   router.use("/auth", authRouter(router.appData));
-  //router.use("/account", accountRouter(router.db));
 
   return router;
 };
