@@ -21,11 +21,11 @@ TEST_USER_ID=abcd
 ### Build
 
 ```
-cd app && yarn run build
+cd app && yarn build
 ```
 
 ### Start
 
 ```
-cd server && yarn node index.js
+cd server && yarn start
 ```
