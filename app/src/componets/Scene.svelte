@@ -58,8 +58,10 @@
     animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
     raycaster="objects: .collidable" />-->
 
-  <!--="enabled: {!keyboardActive}"-->
-  <a-entity id="rig" movement-controls position="0 0 0">
+  <a-entity
+    id="rig"
+    movement-controls="enabled: {!keyboardActive}"
+    position="0 0 0">
     <a-entity camera position="0 1.6 0" look-controls>
       <a-entity
         id="mouseCursor"

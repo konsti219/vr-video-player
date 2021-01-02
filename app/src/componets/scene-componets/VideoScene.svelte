@@ -12,8 +12,7 @@
   let videoId;
 
   let vrVideo;
-  let activeRoom;
-  let inRoom;
+  let room;
 
   onMount(() => {
     socket.on("videos", (p) => {
@@ -35,13 +34,14 @@
 
       if (p.user === account.id) {
         console.log("self leave");
-        activeRoom = undefined;
-        inRoom = undefined;
+        room = undefined;
       }
     });
 
     socket.on("room.info", (p) => {
       console.log("room info", p);
+
+      room = p;
     });
   });
 
@@ -52,8 +52,7 @@
     socket.removeAllListeners("room.info");
 
     socket.emit("room.leave", {});
-    activeRoom = undefined;
-    inRoom = undefined;
+    room = undefined;
   });
 </script>
 
@@ -67,6 +66,17 @@
     videoId = e.detail.pick;
   }} />
 
+{#if room}
+  <a-entity position="-2 2 -1.5" rotation="0 45 0">
+    <a-text
+      font="dejavu"
+      color="#000"
+      position="0 0 0"
+      scale="0.7 0.7"
+      align="center"
+      value={room.name} />
+  </a-entity>
+{/if}
 <!-- 
   TODO:
   - show room info
