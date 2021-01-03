@@ -101,6 +101,11 @@
     charcode="f52b"
     on:click={() => {
       inGame = false;
+
+      if (localStorage.getItem('useHeadset') === 'true') {
+        document.exitFullscreen();
+        document.querySelector('main').requestFullscreen();
+      }
     }} />
   <VrButton
     position="0.8 3 -2"

@@ -47,8 +47,16 @@
   const handleGameEnter = () => {
     if (gameReady) {
       inGame = true;
+
+      if (localStorage.getItem("useHeadset") === "true") {
+        document.querySelector(".a-enter-vr-button").click();
+      }
     }
   };
+
+  if (!localStorage.getItem("useHeadset")) {
+    localStorage.setItem("useHeadset", false);
+  }
 </script>
 
 <style>
@@ -122,6 +130,11 @@
     padding-right: 0.8em;
     padding-left: 0.1em;
   }
+
+  input[type="checkbox"] {
+    width: 1.8em;
+    height: 1.8em;
+  }
 </style>
 
 <LoginHandler bind:account bind:socket bind:loggedIn />
@@ -170,7 +183,16 @@
             {account.name}
           {/if}</span>
         <br /><br />
-        <span class="button big" on:click={handleGameEnter}>Start</span><br />
+        <span
+          class="button big"
+          on:click={handleGameEnter}>Start</span><br /><br />
+
+        <input
+          type="checkbox"
+          name="use-headset"
+          checked={localStorage.getItem('useHeadset') === 'true'}
+          on:change={(e) => localStorage.setItem('useHeadset', e.target.checked)} />
+        Use VR-Headset
       </InterfacePanel>
 
       <!-- logout and exit buttons -->
