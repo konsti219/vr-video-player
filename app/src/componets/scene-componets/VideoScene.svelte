@@ -3,6 +3,7 @@
 
   import VrVideo from "./VrVideo.svelte";
   import VideoPicker from "./VideoPicker.svelte";
+  import VrSocial from "./VrSocial.svelte";
 
   export let keyboardActive;
   export let handleKeyboard;
@@ -67,15 +68,13 @@
   }} />
 
 {#if room}
-  <a-entity position="-2.5 2 -1.5" rotation="0 30 0">
-    <a-text
-      font="dejavu"
-      color="#DDD"
-      position="0 0 0"
-      scale="0.7 0.7"
-      align="center"
-      value={room.name} />
-  </a-entity>
+  <VrSocial
+    bind:socket
+    bind:room
+    bind:keyboardActive
+    bind:handleKeyboard
+    position="-2.5 2 -1.5"
+    rotation="0 30 0" />
 {/if}
 <!-- 
   TODO:
