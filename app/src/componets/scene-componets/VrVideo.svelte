@@ -1,7 +1,8 @@
 <script>
+  import { onMount } from "svelte";
+
   import VrButton from "./VrButton.svelte";
   import RoundedPlane from "./RoundedPlane.svelte";
-  import { onMount } from "svelte";
 
   export let position = "0 0 0";
   export let videoId;

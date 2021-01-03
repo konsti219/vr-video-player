@@ -2,6 +2,7 @@
   import { onDestroy, createEventDispatcher } from "svelte";
 
   import VrButton from "./VrButton.svelte";
+  import RoundedPlane from "./RoundedPlane.svelte";
 
   export let keyboardActive;
   export let handleKeyboard;
@@ -52,9 +53,16 @@
 
   <a-text
     font="dejavu"
-    color="#000"
+    color="#DDD"
     position="0 0.5 0"
     scale="0.5 0.5"
     align="center"
     value={pickingVideo ? "Pick a video by\ntyping it's id\ninto the keyboard \n(like 'iik25wqIuFo')" : 'Video picker'} />
+
+  <RoundedPlane
+    color="#333"
+    width="1.2"
+    height="1.2"
+    radius="0.1"
+    position="0 0.2 -0.01" />
 </a-entity>
