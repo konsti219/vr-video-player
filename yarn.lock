@@ -178,6 +178,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aframe-rounded@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "aframe-rounded@npm:1.0.3"
+  checksum: 1f982e0207af376810ba7a23e4c8beb6e550041f1a8bffcc67444580bed485344c3a2176953d17b19ebb7086d972cbe91b7a1bccb5870b5490f2a37904fe6d08
+  languageName: node
+  linkType: hard
+
 "aframe@npm:^1.1.0":
   version: 1.1.0
   resolution: "aframe@npm:1.1.0"
@@ -257,6 +264,7 @@ __metadata:
     "@rollup/plugin-node-resolve": ^10.0.0
     aframe: ^1.1.0
     aframe-extras: ^6.1.1
+    aframe-rounded: ^1.0.3
     dotenv: ^8.2.0
     rollup: ^2.3.4
     rollup-plugin-css-only: ^3.0.0

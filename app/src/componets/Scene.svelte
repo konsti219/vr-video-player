@@ -1,6 +1,7 @@
 <script>
   import "aframe";
   import "aframe-extras";
+  import "aframe-rounded";
 
   import Keyboard from "./scene-componets/Keyboard.svelte";
   import RegisterScene from "./scene-componets/RegisterScene.svelte";

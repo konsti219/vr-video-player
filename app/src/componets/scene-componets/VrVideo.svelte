@@ -1,5 +1,6 @@
 <script>
   import VrButton from "./VrButton.svelte";
+  import RoundedPlane from "./RoundedPlane.svelte";
   import { onMount } from "svelte";
 
   export let position = "0 0 0";
@@ -69,10 +70,17 @@
       <a-image position="0 0 0" src="#loadingImg" scale="2 1.125" />
     {/if}
   {:else}
+    <RoundedPlane
+      color="#333"
+      width="2"
+      height="1.125"
+      radius="0.1"
+      position="0 0 -0.01" />
     <a-text
       font="dejavu"
-      color="#000"
+      color="#DDD"
       position="0 0 0"
+      scale="0.8 0.8"
       align="center"
       value="No video seleted" />
   {/if}
