@@ -3,11 +3,16 @@ const shortId = require("../lib/shortId.js");
 
 module.exports = async (appData, socket, path, p) => {
   if (path === "default") {
+    //
+    // join default room
+    //
     const user = await appData.db.findOne({ id: socket.userId });
 
     const defaultRoomEntry = user.rooms.filter((r) => r.personal)[0];
 
     let roomId = crypto.randomBytes(16).toString("hex");
+
+    // create default room if not exist
     if (!defaultRoomEntry) {
       console.log(`room creating default | id:${roomId} user:${socket.userId}`);
 
@@ -51,14 +56,22 @@ module.exports = async (appData, socket, path, p) => {
       roomId = defaultRoomEntry.id;
     }
 
-    // join
+    // join default room
     console.log(`room join default | id:${roomId} user:${socket.userId}`);
     await joinRoom(appData, socket, roomId);
+    //
   } else if (path === "leave") {
+    //
+    // leave a room
+    //
     if (socket.room) {
       leaveRoom(appData, socket);
     }
+    //
   } else if (path === "info") {
+    //
+    // get info about rooms
+    //
     const roomId = p.id ?? socket.room;
     if (!roomId) return;
 
@@ -77,10 +90,12 @@ const joinRoom = async (appData, socket, roomId) => {
   if (!room) return;
   console.log(`room join | id:${roomId} user:${socket.userId}`);
 
+  // TODO: check room join perm
+  /*
   if (room.permissions.join !== "anyone") {
     let member = room.members.filter((m) => m.id === socket.id);
     console.log(member);
-  }
+  }*/
 
   // leave old room
   if (socket.room) {
