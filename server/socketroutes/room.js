@@ -59,19 +59,29 @@ module.exports = async (appData, socket, path, p) => {
     // join default room
     console.log(`room join default | id:${roomId} user:${socket.userId}`);
     await joinRoom(appData, socket, roomId);
-    //
+  } else if (path === "join") {
+    // join room
+    console.log("join", p);
+    if (!(p.id || p.roomCode)) return;
+
+    const room = p.id
+      ? await appData.roomsDb.findOne({ id: p.id })
+      : await appData.roomsDb.findOne({ roomCode: p.roomCode });
+
+    console.log(room);
+
+    if (!room) return;
+
+    await joinRoom(appData, socket, room.id);
   } else if (path === "leave") {
-    //
     // leave a room
-    //
+
     if (socket.room) {
       leaveRoom(appData, socket);
     }
-    //
   } else if (path === "info") {
-    //
     // get info about rooms
-    //
+
     const roomId = p.id ?? socket.room;
     if (!roomId) return;
 

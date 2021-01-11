@@ -74,6 +74,7 @@ rooms [
   {
     id: "",
     name: "",
+    roomCode: "AAAAAA",
     members: [
       {
         id: "",
