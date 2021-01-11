@@ -1,0 +1,15 @@
+{
+  "name": "vr-video-player",
+  "version": "0.0.1",
+  "description": "Watch videos in VR",
+  "keywords": ["vr", "svelte", "sveltejs", "svelte3", "aframe", "aframevr", "js", "javascript", "nodejs", "express", "expressjs"],
+  "license": "GPL-3.0",
+  "homepage": "https://www.vr-video-player.net/",
+  "repository": { "type": "git", "url": "https://github.com/konsti219/vr-video-player" },
+
+  "private": true,
+  "workspaces": [
+    "app",
+    "server"
+  ]
+}
