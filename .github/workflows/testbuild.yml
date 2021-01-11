@@ -10,5 +10,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
-      - run: cd app && npm install
-      - run: cd app && npm run build
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install  
+      - run: yarn :build
