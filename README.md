@@ -21,11 +21,11 @@ TEST_USER_ID=abcd
 ### Build
 
 ```
-cd app && yarn build
+yarn :build
 ```
 
 ### Start
 
 ```
-cd server && yarn start
+yarn :start
 ```

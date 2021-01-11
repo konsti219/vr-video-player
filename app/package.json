@@ -1,12 +1,11 @@
 {
   "name": "app",
   "version": "0.0.1",
-  "description": "watch videos in vr",
-  "repository": "https://github.com/konsti219/vr-video-player",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "rollup -c"
+    ":build": "rollup -c"
   },
+  "main": "src/main.js",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
