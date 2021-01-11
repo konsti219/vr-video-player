@@ -73,7 +73,7 @@
     bind:room
     bind:keyboardActive
     bind:handleKeyboard
-    position="-2.5 2 -1.5"
+    position="-2.5 1.7 -1.5"
     rotation="0 30 0" />
 {/if}
 <!-- 

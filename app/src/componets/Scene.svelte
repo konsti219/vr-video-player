@@ -22,6 +22,8 @@
 
   let scene;
   $: scene = inGame ? (account.name === "[NEW]" ? "register" : "video") : "";
+
+  document.addEventListener("contextmenu", (event) => event.preventDefault());
 </script>
 
 <!-- AFRAME SCENE -->
